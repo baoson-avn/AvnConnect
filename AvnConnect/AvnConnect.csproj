@@ -38,6 +38,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -59,7 +67,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -90,6 +101,42 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\Connect.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Connect.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Connect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Department.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Education.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ForeignLanguage.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\JobTitles.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\PracticingLicense.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Staff.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\WorkingExperience.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -113,6 +160,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="Data\Connect.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Connect.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Data\Connect.edmx.diagram">
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -122,6 +176,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Connect.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connect.Context.cs</LastGenOutput>
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </Content>
+    <Content Include="Data\Connect.edmx.sql" />
+    <Content Include="Data\Connect.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connect.cs</LastGenOutput>
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

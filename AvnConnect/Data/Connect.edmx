@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Connect.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ConnectStoreContainer">
+    <EntitySet Name="Staffs" EntityType="Connect.Store.Staffs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="JobTitles" EntityType="Connect.Store.JobTitles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Departments" EntityType="Connect.Store.Departments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Educations" EntityType="Connect.Store.Educations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ForeignLanguages" EntityType="Connect.Store.ForeignLanguages" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PracticingLicenses" EntityType="Connect.Store.PracticingLicenses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="WorkingExperiences" EntityType="Connect.Store.WorkingExperiences" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Staffs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Firstname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Birthday" Type="datetime" Nullable="true" />
+    <Property Name="PlaceOfBirth" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FirstDayAtWork" Type="datetime" Nullable="true" />
+    <Property Name="LastDayAtWork" Type="datetime" Nullable="true" />
+    <Property Name="JobTitle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nationality" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Gender" Type="bit" Nullable="true" />
+    <Property Name="HomePhone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MobilePhone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MaritalStatus" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IDNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="DateOf_ID_Issue" Type="datetime" Nullable="true" />
+    <Property Name="PlaceOf_ID_Issue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PassportNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="DateOfPassportIssue" Type="datetime" Nullable="true" />
+    <Property Name="PlaceOfPassportIssue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PermanentResidence" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CurrentAddress" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SocialInsuranceNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PIT_Code" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PIT_Deduction" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="VCBAccount" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OtherBankAccount" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OtherBankAccountSubsidiary" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmergencyContactName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmergencyContactPhone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmergencyContactRelationship" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Key" Type="nchar" Nullable="false" MaxLength="16" />
+    <Property Name="Avatar" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AddedOn" Type="datetime" Nullable="false" />
+    <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedOn" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nchar" Nullable="false" MaxLength="32" />
+  </EntityType>
+  <EntityType Name="JobTitles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Key" Type="nchar" Nullable="false" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Key" Type="nchar" Nullable="false" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="Educations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StaffKey" Type="nchar" Nullable="false" MaxLength="16" />
+    <Property Name="EducationDegree" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NameOfSchool" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Country" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Speciality" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FromYear" Type="datetime" Nullable="false" />
+    <Property Name="ToYear" Type="datetime" Nullable="true" />
+    <Property Name="IsLearning" Type="bit" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ForeignLanguages">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StaffKey" Type="nchar" Nullable="false" MaxLength="16" />
+    <Property Name="Language" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SpeakingLevel" Type="tinyint" Nullable="false" />
+    <Property Name="ListeningLevel" Type="tinyint" Nullable="false" />
+    <Property Name="ReadingLevel" Type="tinyint" Nullable="false" />
+    <Property Name="WritingLevel" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PracticingLicenses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StaffKey" Type="nchar" Nullable="false" MaxLength="16" />
+    <Property Name="LicenseNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateOfIssue" Type="datetime" Nullable="true" />
+    <Property Name="Status" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PlaceOfIssue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ProfessionalArea" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="WorkingExperiences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StaffKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NameOfCompany" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FromTime" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ToTime" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CurrentlyWorking" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Jobtitle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ResignationReason" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Connect" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ConnectContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Staffs" EntityType="Connect.Staff" />
+          <EntitySet Name="JobTitles" EntityType="Connect.JobTitles" />
+          <EntitySet Name="Departments" EntityType="Connect.Department" />
+          <EntitySet Name="Educations" EntityType="Connect.Education" />
+          <EntitySet Name="ForeignLanguages" EntityType="Connect.ForeignLanguage" />
+          <EntitySet Name="PracticingLicenses" EntityType="Connect.PracticingLicense" />
+          <EntitySet Name="WorkingExperiences" EntityType="Connect.WorkingExperience" />
+        </EntityContainer>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <Property Name="Firstname" Type="String" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="true" />
+          <Property Name="PlaceOfBirth" Type="String" Nullable="true" />
+          <Property Name="FirstDayAtWork" Type="DateTime" Nullable="true" />
+          <Property Name="LastDayAtWork" Type="DateTime" Nullable="true" />
+          <Property Name="JobTitle" Type="String" Nullable="false" />
+          <Property Name="Department" Type="String" Nullable="false" />
+          <Property Name="Nationality" Type="String" Nullable="true" />
+          <Property Name="Gender" Type="Boolean" Nullable="true" />
+          <Property Name="HomePhone" Type="String" Nullable="true" />
+          <Property Name="MobilePhone" Type="String" Nullable="true" />
+          <Property Name="MaritalStatus" Type="String" Nullable="true" />
+          <Property Name="IDNumber" Type="String" Nullable="true" />
+          <Property Name="DateOf_ID_Issue" Type="DateTime" Nullable="true" />
+          <Property Name="PlaceOf_ID_Issue" Type="String" Nullable="true" />
+          <Property Name="PassportNumber" Type="String" Nullable="true" />
+          <Property Name="DateOfPassportIssue" Type="DateTime" Nullable="true" />
+          <Property Name="PlaceOfPassportIssue" Type="String" Nullable="true" />
+          <Property Name="EmailAddress" Type="String" Nullable="false" />
+          <Property Name="PermanentResidence" Type="String" Nullable="true" />
+          <Property Name="CurrentAddress" Type="String" Nullable="true" />
+          <Property Name="SocialInsuranceNumber" Type="String" Nullable="true" />
+          <Property Name="PIT_Code" Type="String" Nullable="true" />
+          <Property Name="PIT_Deduction" Type="String" Nullable="true" />
+          <Property Name="VCBAccount" Type="String" Nullable="true" />
+          <Property Name="OtherBankAccount" Type="String" Nullable="true" />
+          <Property Name="OtherBankAccountSubsidiary" Type="String" Nullable="true" />
+          <Property Name="EmergencyContactName" Type="String" Nullable="true" />
+          <Property Name="EmergencyContactPhone" Type="String" Nullable="true" />
+          <Property Name="EmergencyContactRelationship" Type="String" Nullable="true" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="16" FixedLength="true" />
+          <Property Name="Avatar" Type="String" Nullable="true" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" />
+          <Property Name="AddedBy" Type="String" Nullable="false" />
+          <Property Name="ModifiedOn" Type="String" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" FixedLength="true" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="JobTitles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="16" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" FixedLength="true" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="Education">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffKey" Type="String" Nullable="false" FixedLength="true" MaxLength="16" />
+          <Property Name="EducationDegree" Type="String" Nullable="false" />
+          <Property Name="NameOfSchool" Type="String" Nullable="false" />
+          <Property Name="Country" Type="String" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" />
+          <Property Name="Speciality" Type="String" Nullable="false" />
+          <Property Name="FromYear" Type="DateTime" Nullable="false" />
+          <Property Name="ToYear" Type="DateTime" Nullable="true" />
+          <Property Name="IsLearning" Type="Boolean" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ForeignLanguage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffKey" Type="String" Nullable="false" FixedLength="true" MaxLength="16" />
+          <Property Name="Language" Type="String" Nullable="false" />
+          <Property Name="SpeakingLevel" Type="Byte" Nullable="false" />
+          <Property Name="ListeningLevel" Type="Byte" Nullable="false" />
+          <Property Name="ReadingLevel" Type="Byte" Nullable="false" />
+          <Property Name="WritingLevel" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PracticingLicense">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffKey" Type="String" Nullable="false" FixedLength="true" MaxLength="16" />
+          <Property Name="LicenseNumber" Type="String" Nullable="false" />
+          <Property Name="DateOfIssue" Type="DateTime" Nullable="true" />
+          <Property Name="Status" Type="String" Nullable="true" />
+          <Property Name="PlaceOfIssue" Type="String" Nullable="true" />
+          <Property Name="ProfessionalArea" Type="String" Nullable="true" />
+        </EntityType>
+        <EntityType Name="WorkingExperience">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffKey" Type="String" Nullable="false" />
+          <Property Name="NameOfCompany" Type="String" Nullable="false" />
+          <Property Name="FromTime" Type="String" Nullable="false" />
+          <Property Name="ToTime" Type="String" Nullable="false" />
+          <Property Name="CurrentlyWorking" Type="String" Nullable="false" />
+          <Property Name="Jobtitle" Type="String" Nullable="false" />
+          <Property Name="ResignationReason" Type="String" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ConnectStoreContainer" CdmEntityContainer="ConnectContainer">
+    <EntitySetMapping Name="Staffs">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Staff)">
+        <MappingFragment StoreEntitySet="Staffs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="PlaceOfBirth" ColumnName="PlaceOfBirth" />
+          <ScalarProperty Name="FirstDayAtWork" ColumnName="FirstDayAtWork" />
+          <ScalarProperty Name="LastDayAtWork" ColumnName="LastDayAtWork" />
+          <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="HomePhone" ColumnName="HomePhone" />
+          <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+          <ScalarProperty Name="DateOf_ID_Issue" ColumnName="DateOf_ID_Issue" />
+          <ScalarProperty Name="PlaceOf_ID_Issue" ColumnName="PlaceOf_ID_Issue" />
+          <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+          <ScalarProperty Name="DateOfPassportIssue" ColumnName="DateOfPassportIssue" />
+          <ScalarProperty Name="PlaceOfPassportIssue" ColumnName="PlaceOfPassportIssue" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="PermanentResidence" ColumnName="PermanentResidence" />
+          <ScalarProperty Name="CurrentAddress" ColumnName="CurrentAddress" />
+          <ScalarProperty Name="SocialInsuranceNumber" ColumnName="SocialInsuranceNumber" />
+          <ScalarProperty Name="PIT_Code" ColumnName="PIT_Code" />
+          <ScalarProperty Name="PIT_Deduction" ColumnName="PIT_Deduction" />
+          <ScalarProperty Name="VCBAccount" ColumnName="VCBAccount" />
+          <ScalarProperty Name="OtherBankAccount" ColumnName="OtherBankAccount" />
+          <ScalarProperty Name="OtherBankAccountSubsidiary" ColumnName="OtherBankAccountSubsidiary" />
+          <ScalarProperty Name="EmergencyContactName" ColumnName="EmergencyContactName" />
+          <ScalarProperty Name="EmergencyContactPhone" ColumnName="EmergencyContactPhone" />
+          <ScalarProperty Name="EmergencyContactRelationship" ColumnName="EmergencyContactRelationship" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+          <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="JobTitles">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.JobTitles)">
+        <MappingFragment StoreEntitySet="JobTitles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Department)">
+        <MappingFragment StoreEntitySet="Departments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Educations">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Education)">
+        <MappingFragment StoreEntitySet="Educations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="EducationDegree" ColumnName="EducationDegree" />
+          <ScalarProperty Name="NameOfSchool" ColumnName="NameOfSchool" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Speciality" ColumnName="Speciality" />
+          <ScalarProperty Name="FromYear" ColumnName="FromYear" />
+          <ScalarProperty Name="ToYear" ColumnName="ToYear" />
+          <ScalarProperty Name="IsLearning" ColumnName="IsLearning" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ForeignLanguages">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.ForeignLanguage)">
+        <MappingFragment StoreEntitySet="ForeignLanguages">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="Language" ColumnName="Language" />
+          <ScalarProperty Name="SpeakingLevel" ColumnName="SpeakingLevel" />
+          <ScalarProperty Name="ListeningLevel" ColumnName="ListeningLevel" />
+          <ScalarProperty Name="ReadingLevel" ColumnName="ReadingLevel" />
+          <ScalarProperty Name="WritingLevel" ColumnName="WritingLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PracticingLicenses">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.PracticingLicense)">
+        <MappingFragment StoreEntitySet="PracticingLicenses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
+          <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PlaceOfIssue" ColumnName="PlaceOfIssue" />
+          <ScalarProperty Name="ProfessionalArea" ColumnName="ProfessionalArea" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WorkingExperiences">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.WorkingExperience)">
+        <MappingFragment StoreEntitySet="WorkingExperiences">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="NameOfCompany" ColumnName="NameOfCompany" />
+          <ScalarProperty Name="FromTime" ColumnName="FromTime" />
+          <ScalarProperty Name="ToTime" ColumnName="ToTime" />
+          <ScalarProperty Name="CurrentlyWorking" ColumnName="CurrentlyWorking" />
+          <ScalarProperty Name="Jobtitle" ColumnName="Jobtitle" />
+          <ScalarProperty Name="ResignationReason" ColumnName="ResignationReason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
