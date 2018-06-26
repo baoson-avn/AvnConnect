@@ -21,8 +21,9 @@ namespace AvnConnect.Data
         public string Country { get; set; }
         public string City { get; set; }
         public string Speciality { get; set; }
-        public System.DateTime FromYear { get; set; }
+        public Nullable<System.DateTime> FromYear { get; set; }
         public Nullable<System.DateTime> ToYear { get; set; }
         public Nullable<bool> IsLearning { get; set; }
+        public string EducationKey { get; set; }
     }
 }

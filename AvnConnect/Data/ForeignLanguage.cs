@@ -21,5 +21,6 @@ namespace AvnConnect.Data
         public byte ListeningLevel { get; set; }
         public byte ReadingLevel { get; set; }
         public byte WritingLevel { get; set; }
+        public string Key { get; set; }
     }
 }

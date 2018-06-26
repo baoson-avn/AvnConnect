@@ -35,6 +35,7 @@ namespace AvnConnect.Data
         public Nullable<System.DateTime> DateOfPassportIssue { get; set; }
         public string PlaceOfPassportIssue { get; set; }
         public string EmailAddress { get; set; }
+        public string Email2 { get; set; }
         public string PermanentResidence { get; set; }
         public string CurrentAddress { get; set; }
         public string SocialInsuranceNumber { get; set; }

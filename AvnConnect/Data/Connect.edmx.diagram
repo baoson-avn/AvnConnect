@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ec593af7262c4f91b01631a6ca64e25b" Name="Diagram1" ZoomLevel="105" >
-        <EntityTypeShape EntityType="Connect.Staff" Width="2.25" PointX="0.5" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Connect.Staff" Width="2.25" PointX="3.375" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Connect.JobTitles" Width="2.25" PointX="0.5" PointY="1.125" IsExpanded="false" />
         <EntityTypeShape EntityType="Connect.Department" Width="2.25" PointX="0.5" PointY="1.75" IsExpanded="false" />
         <EntityTypeShape EntityType="Connect.Education" Width="2.25" PointX="0.5" PointY="2.375" IsExpanded="false" />

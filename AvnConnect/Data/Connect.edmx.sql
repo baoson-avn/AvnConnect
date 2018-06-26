@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/19/2018 09:00:10
--- Generated from EDMX file: C:\Users\avn1\documents\visual studio 2015\Projects\AvnConnect\AvnConnect\Data\Connect.edmx
+-- Date Created: 06/26/2018 08:24:09
+-- Generated from EDMX file: D:\Documents\Visual Studio 2015\Projects\AvnConnect\AvnConnect\Data\Connect.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -22,6 +22,27 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[Staffs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Staffs];
+GO
+IF OBJECT_ID(N'[dbo].[JobTitles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[JobTitles];
+GO
+IF OBJECT_ID(N'[dbo].[Departments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Departments];
+GO
+IF OBJECT_ID(N'[dbo].[Educations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Educations];
+GO
+IF OBJECT_ID(N'[dbo].[ForeignLanguages]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ForeignLanguages];
+GO
+IF OBJECT_ID(N'[dbo].[PracticingLicenses]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PracticingLicenses];
+GO
+IF OBJECT_ID(N'[dbo].[WorkingExperiences]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[WorkingExperiences];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -50,6 +71,7 @@ CREATE TABLE [dbo].[Staffs] (
     [DateOfPassportIssue] datetime  NULL,
     [PlaceOfPassportIssue] nvarchar(max)  NULL,
     [EmailAddress] nvarchar(max)  NOT NULL,
+    [Email2] nvarchar(max)  NULL,
     [PermanentResidence] nvarchar(max)  NULL,
     [CurrentAddress] nvarchar(max)  NULL,
     [SocialInsuranceNumber] nvarchar(max)  NULL,
@@ -96,9 +118,10 @@ CREATE TABLE [dbo].[Educations] (
     [Country] nvarchar(max)  NOT NULL,
     [City] nvarchar(max)  NOT NULL,
     [Speciality] nvarchar(max)  NOT NULL,
-    [FromYear] datetime  NOT NULL,
+    [FromYear] datetime  NULL,
     [ToYear] datetime  NULL,
-    [IsLearning] bit  NULL
+    [IsLearning] bit  NULL,
+    [EducationKey] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -110,7 +133,8 @@ CREATE TABLE [dbo].[ForeignLanguages] (
     [SpeakingLevel] tinyint  NOT NULL,
     [ListeningLevel] tinyint  NOT NULL,
     [ReadingLevel] tinyint  NOT NULL,
-    [WritingLevel] tinyint  NOT NULL
+    [WritingLevel] tinyint  NOT NULL,
+    [Key] nvarchar(max)  NOT NULL
 );
 GO
 

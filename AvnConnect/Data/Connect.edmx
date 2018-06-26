@@ -39,6 +39,7 @@
     <Property Name="DateOfPassportIssue" Type="datetime" Nullable="true" />
     <Property Name="PlaceOfPassportIssue" Type="nvarchar(max)" Nullable="true" />
     <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email2" Type="nvarchar(max)" Nullable="true" />
     <Property Name="PermanentResidence" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CurrentAddress" Type="nvarchar(max)" Nullable="true" />
     <Property Name="SocialInsuranceNumber" Type="nvarchar(max)" Nullable="true" />
@@ -85,9 +86,10 @@
     <Property Name="Country" Type="nvarchar(max)" Nullable="false" />
     <Property Name="City" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Speciality" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="FromYear" Type="datetime" Nullable="false" />
+    <Property Name="FromYear" Type="datetime" Nullable="true" />
     <Property Name="ToYear" Type="datetime" Nullable="true" />
     <Property Name="IsLearning" Type="bit" Nullable="true" />
+    <Property Name="EducationKey" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="ForeignLanguages">
     <Key>
@@ -100,6 +102,7 @@
     <Property Name="ListeningLevel" Type="tinyint" Nullable="false" />
     <Property Name="ReadingLevel" Type="tinyint" Nullable="false" />
     <Property Name="WritingLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PracticingLicenses">
     <Key>
@@ -164,6 +167,7 @@
           <Property Name="DateOfPassportIssue" Type="DateTime" Nullable="true" />
           <Property Name="PlaceOfPassportIssue" Type="String" Nullable="true" />
           <Property Name="EmailAddress" Type="String" Nullable="false" />
+          <Property Name="Email2" Type="String" Nullable="true" />
           <Property Name="PermanentResidence" Type="String" Nullable="true" />
           <Property Name="CurrentAddress" Type="String" Nullable="true" />
           <Property Name="SocialInsuranceNumber" Type="String" Nullable="true" />
@@ -210,9 +214,10 @@
           <Property Name="Country" Type="String" Nullable="false" />
           <Property Name="City" Type="String" Nullable="false" />
           <Property Name="Speciality" Type="String" Nullable="false" />
-          <Property Name="FromYear" Type="DateTime" Nullable="false" />
+          <Property Name="FromYear" Type="DateTime" Nullable="true" />
           <Property Name="ToYear" Type="DateTime" Nullable="true" />
           <Property Name="IsLearning" Type="Boolean" Nullable="true" />
+          <Property Name="EducationKey" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="ForeignLanguage">
           <Key>
@@ -225,6 +230,7 @@
           <Property Name="ListeningLevel" Type="Byte" Nullable="false" />
           <Property Name="ReadingLevel" Type="Byte" Nullable="false" />
           <Property Name="WritingLevel" Type="Byte" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="PracticingLicense">
           <Key>
@@ -281,6 +287,7 @@
           <ScalarProperty Name="DateOfPassportIssue" ColumnName="DateOfPassportIssue" />
           <ScalarProperty Name="PlaceOfPassportIssue" ColumnName="PlaceOfPassportIssue" />
           <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="Email2" ColumnName="Email2" />
           <ScalarProperty Name="PermanentResidence" ColumnName="PermanentResidence" />
           <ScalarProperty Name="CurrentAddress" ColumnName="CurrentAddress" />
           <ScalarProperty Name="SocialInsuranceNumber" ColumnName="SocialInsuranceNumber" />
@@ -333,6 +340,7 @@
           <ScalarProperty Name="FromYear" ColumnName="FromYear" />
           <ScalarProperty Name="ToYear" ColumnName="ToYear" />
           <ScalarProperty Name="IsLearning" ColumnName="IsLearning" />
+          <ScalarProperty Name="EducationKey" ColumnName="EducationKey" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -346,6 +354,7 @@
           <ScalarProperty Name="ListeningLevel" ColumnName="ListeningLevel" />
           <ScalarProperty Name="ReadingLevel" ColumnName="ReadingLevel" />
           <ScalarProperty Name="WritingLevel" ColumnName="WritingLevel" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

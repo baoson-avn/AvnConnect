@@ -1,0 +1,501 @@
+﻿<UserControl x:Name="userControl" x:Class="AvnConnect.Staffs.AddStaff"
+             xmlns:Material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             VerticalAlignment="Center"
+             xmlns:Converter="clr-namespace:AvnConnect.Converter"
+             xmlns:domain1="clr-namespace:AvnConnect.Domain"
+             SnapsToDevicePixels="True"
+             HorizontalAlignment="Center"
+             Background="White"
+             xmlns:local="clr-namespace:AvnConnect.Staffs">
+
+    <!--<UserControl.DataContext>
+        <local:AddStaff></local:AddStaff>
+    </UserControl.DataContext>-->
+
+    <UserControl.Resources>
+        <Converter:SelectedToBackgroundBrush x:Key="SelectedToBackgroundBrush"></Converter:SelectedToBackgroundBrush>
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></Converter:BooleanToVisibilityConverter>
+    </UserControl.Resources>
+   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Thanh tiêu đề-->
+        <DockPanel Background="{DynamicResource PrimaryHueDarkBrush}">
+            <Border Padding="6" DockPanel.Dock="Right" Margin="20, 10" Background="Transparent" ToolTip="Close" MouseLeftButtonUp="CloseButton_Click" VerticalAlignment="Center" Cursor="Hand">
+                <Material:PackIcon Kind="CloseBox" Foreground="White"></Material:PackIcon>
+            </Border>
+            <TextBlock Margin="20, 10" Text="Add User" Foreground="White" Style="{DynamicResource MaterialDesignDisplay1TextBlock}"></TextBlock>
+        </DockPanel>
+
+        <!--Tab control-->
+        <Border Padding="10, 3" BorderBrush="LightGray" Grid.Row="1" BorderThickness="0, 0, 0, 2">
+            <StackPanel Orientation="Horizontal">
+                <ListBox Visibility="Collapsed" x:Name="ItemListBox">
+                    <ListBoxItem x:Name="PersonalItem" IsSelected="True" >
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="EducationItem" >
+                    </ListBoxItem>
+                    <ListBoxItem   x:Name="LanguageItem">
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="PracticingItem">
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="ExperienceItem">
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="OtherItem">
+                    </ListBoxItem>
+                </ListBox>
+                <Button Content="Personal" 
+                        Tag="PersonalItem" Click="HeaderButtonClicked" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=PersonalItem}"></Button>
+                <Button Content="Education" Click="HeaderButtonClicked" Tag="EducationItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=EducationItem}"></Button>
+                <Button Content="Foreign Language" Click="HeaderButtonClicked" Tag="LanguageItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=LanguageItem}"></Button>
+                <Button Content="Practicing License" Click="HeaderButtonClicked" Tag="PracticingItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=PracticingItem}"></Button>
+                <Button Content="Experiences" Click="HeaderButtonClicked" Tag="ExperienceItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=ExperienceItem}"></Button>
+                <Button Content="Others" Click="HeaderButtonClicked" Tag="OtherItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 6" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=OtherItem}"></Button>
+            </StackPanel>
+        </Border>
+
+        <!--Personal Information-->
+        <ScrollViewer MaxHeight="450" Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=PersonalItem}">
+            <Grid x:Name="PersonalInformationGrid" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--HỌ và tên-->
+                <TextBlock Text="Family Name:" VerticalAlignment="Center" Margin="10, 3"></TextBlock>
+                <TextBox MinHeight="24" Grid.Column="1" Margin="10, 3" 
+                         Material:HintAssist.Hint="Required">
+                    <TextBox.Text>
+                        <Binding Path="MyStaff.Surname, ElementName=userControl, Mode=TwoWay}" UpdateSourceTrigger="PropertyChanged"/>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBlock Text="First Name:" VerticalAlignment="Center" Grid.Column="2" Margin="10, 3"></TextBlock>
+                <TextBox MinHeight="24" Grid.Column="3" Margin="10, 3" 
+                         Material:HintAssist.Hint="Required"
+                         Text="{Binding MyStaff.Firstname, ElementName=userControl, Mode=TwoWay}"></TextBox>
+
+                <!--Birthday and place of birth-->
+                <TextBlock Text="Date of Birth:" VerticalAlignment="Center" Grid.Row="1" Margin="10, 3"></TextBlock>
+                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10, 3" Grid.Row="1" 
+                            SelectedDate="{Binding MyStaff.Birthday, Mode=TwoWay}"
+                            Material:HintAssist.Hint="Select Date"></DatePicker>
+
+                <TextBlock Text="Place of Birth:" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Margin="10, 3"></TextBlock>
+                <TextBox Grid.Column="3" Margin="10, 3" Text="{Binding MyStaff.PlaceOfBirth, Mode=TwoWay}" Grid.Row="1"></TextBox>
+
+                <!--First day and last day at work-->
+                <TextBlock Text="First day at AVN:" VerticalAlignment="Center" Grid.Row="2" Margin="10, 3"></TextBlock>
+                <DatePicker Grid.Column="1" HorizontalAlignment="Left" 
+                            SelectedDate="{Binding MyStaff.FirstDayAtWork, Mode=TwoWay}"
+                            Margin="10, 3" Grid.Row="2" Material:HintAssist.Hint="Select Date"></DatePicker>
+
+                <TextBlock Text="Last day at AVN:" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Margin="10, 3"></TextBlock>
+
+                <DatePicker Grid.Column="3" Grid.Row="2" SelectedDate="{Binding MyStaff.LastDayAtWork, Mode=TwoWay}" DockPanel.Dock="Left"
+                            HorizontalAlignment="Left" Margin="10, 3"  Material:HintAssist.Hint="Select Date"></DatePicker>
+                <!--Job Title and Department-->
+                <TextBlock Text="Job Title:" VerticalAlignment="Center" Grid.Row="3" Margin="10, 3"></TextBlock>
+                <DockPanel Grid.Column="1" Grid.Row="3" Margin="10,3">
+                    <Button DockPanel.Dock="Right" Margin="3, 0" VerticalAlignment="Center" Height="20"
+                            ToolTip="Add new job title"
+                            Click="AddNewJobTitleButton_Clicked"
+                            Padding="3" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Material:PackIcon Kind="Plus" VerticalAlignment="Center"></Material:PackIcon>
+                    </Button>
+                    <ComboBox VerticalAlignment="Center" x:Name="JobTitleCombobox" Material:ComboBoxAssist.ClassicMode="true" Material:ComboBoxAssist.ShowSelectedItem="true"></ComboBox>
+                </DockPanel>
+                <TextBlock Text="Department:" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" Margin="10, 3"></TextBlock>
+                <DockPanel Grid.Column="3" Grid.Row="3" Margin="10, 3">
+                    <Button DockPanel.Dock="Right" Height="20" VerticalAlignment="Center" Margin="3, 0"
+                            Click="AddDepartmentButton_Clicked"
+                            Padding="3" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Material:PackIcon Kind="Plus" VerticalAlignment="Center"></Material:PackIcon>
+                    </Button>
+                    <ComboBox VerticalAlignment="Center" x:Name="DepartmentCombobox" Material:ComboBoxAssist.ClassicMode="true" Material:ComboBoxAssist.ShowSelectedItem="true"></ComboBox>
+                </DockPanel>
+
+                <!--Nationality and gender-->
+                <TextBlock Text="Marital Status:" VerticalAlignment="Center" Grid.Row="4" Margin="10, 3"></TextBlock>
+                <ComboBox Grid.Column="1" Grid.Row="4" Margin="10, 3" x:Name="MaritalCombobox" Material:ComboBoxAssist.ClassicMode="true" Material:ComboBoxAssist.ShowSelectedItem="true">
+                    <ComboBoxItem Content="Single" IsSelected="True"></ComboBoxItem>
+                    <ComboBoxItem Content="Married"></ComboBoxItem>
+                    <ComboBoxItem Content="Divorced"></ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Text="Gender:" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" Margin="10, 3"></TextBlock>
+                <ComboBox Grid.Column="3" Grid.Row="4" Margin="10, 3"  Material:ComboBoxAssist.ClassicMode="true" Material:ComboBoxAssist.ShowSelectedItem="true">
+                    <ComboBoxItem Content="Male" IsSelected="True"></ComboBoxItem>
+                    <ComboBoxItem Content="Female"></ComboBoxItem>
+                </ComboBox>
+
+                <!--Home phone and cell fone-->
+                <TextBlock Text="Home phone:" VerticalAlignment="Center" Grid.Row="5" Margin="10, 3"></TextBlock>
+                <TextBox Grid.Column="1" 
+                         Text="{Binding MyStaff.HomePhone, Mode=TwoWay}"
+                         MinHeight="24" Grid.Row="5" Margin="10, 3"></TextBox>
+
+                <TextBlock Text="Cell phone:" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" Margin="10, 3"></TextBlock>
+                <TextBox Grid.Column="3" 
+                         Text="{Binding MyStaff.MobilePhone, Mode=TwoWay}"
+                         MinHeight="24" Grid.Row="5" Margin="10, 3">
+                </TextBox>
+
+                <!--Id -->
+                <TextBlock Text="Identity Cert:" Grid.Row="7" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" >
+                </TextBlock>
+                <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Margin="10, 3" Text="{Binding MyStaff.IDNumber, Mode=TwoWay}" Material:HintAssist.Hint="Number"></TextBox>
+                    <DatePicker Grid.Column="1" SelectedDate="{Binding MyStaff.DateOf_ID_Issue, Mode=TwoWay}" Margin="10, 3" Material:HintAssist.Hint="Date of issue"></DatePicker>
+                    <TextBox Margin="10, 3" Text="{Binding MyStaff.PlaceOf_ID_Issue, Mode=TwoWay}" Grid.Column="2" Material:HintAssist.Hint="Place Of Issue"></TextBox>
+                </Grid>
+
+                <!--Passport-->
+                <TextBlock Text="Passport:" Grid.Row="8" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" >
+                </TextBlock>
+                <Grid Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Margin="10, 3" 
+                             Text="{Binding MyStaff.PassportNumber, Mode=TwoWay}"
+                             Material:HintAssist.Hint="Number"></TextBox>
+                    <DatePicker Grid.Column="1" 
+                                SelectedDate="{Binding MyStaff.DateOfPassportIssue, Mode=TwoWay}"
+                                Margin="10, 3" Material:HintAssist.Hint="Date of issue"></DatePicker>
+                    <TextBox Margin="10, 3" 
+                             Text="{Binding MyStaff.PlaceOfPassportIssue, Mode=TwoWay}"
+                             Grid.Column="2" Material:HintAssist.Hint="Place Of Issue"></TextBox>
+                </Grid>
+
+                <!--Email-->
+                <TextBlock Text="Email:" Grid.Row="9" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" >
+                </TextBlock>
+                <Grid Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Margin="10, 3" 
+                             Text="{Binding MyStaff.EmailAddress, Mode=TwoWay}"
+                             Material:HintAssist.Hint="Email" MinHeight="24">
+                    </TextBox>
+                    <TextBox Margin="10, 3" 
+                             Text="{Binding MyStaff.Email2, Mode=TwoWay}"
+                             Grid.Column="2" MinHeight="24" Material:HintAssist.Hint="Alternative Email"></TextBox>
+                </Grid>
+
+                <!--Address-->
+                <TextBlock Text="Permanent residence:" Grid.Row="10" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Text="{Binding MyStaff.PermanentResidence, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" MinHeight="24"></TextBox>
+
+                <TextBlock Text="Current address:" Grid.Row="11" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Text="{Binding MyStaff.CurrentAddress, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="11" MinHeight="24"></TextBox>
+
+                <!--Social-->
+                <TextBlock Text="Social Insurance No:" Grid.Row="12" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Text="{Binding MyStaff.SocialInsuranceNumber, Mode=TwoWay}" Grid.Column="1" Grid.Row="12" MinHeight="24"></TextBox>
+
+                <TextBlock Text="PIT Code:" Grid.Row="12" Grid.Column="2" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Text="{Binding MyStaff.PIT_Code, Mode=TwoWay}" Grid.Column="3" Grid.Row="12" MinHeight="24"></TextBox>
+
+                <!--Bank Account-->
+                <TextBlock Text="VCB Account:" Grid.Row="13" Grid.Column="0" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Text="{Binding MyStaff.VCBAccount, Mode=TwoWay}" Grid.Column="1" Grid.Row="13" MinHeight="24"></TextBox>
+
+                <TextBlock Text="Other Bank Account:" Grid.Row="13" Grid.Column="2" Margin="10, 3" VerticalAlignment="Center" ></TextBlock>
+                <TextBox Margin="10, 3" Grid.Column="3" Text="{Binding MyStaff.OtherBankAccount, Mode=TwoWay}" Grid.Row="13" MinHeight="24"></TextBox>
+
+            </Grid>
+        </ScrollViewer>
+
+        <!--Education Information-->
+        <Grid Margin="10" Grid.Row="2" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=EducationItem}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <DataGrid  x:Name="EducationGrid" MaxHeight="450"  Width="800" CanUserAddRows="False" 
+                          RowBackground="Transparent"
+                          RowEditEnding="EducationGrid_RowEditEnding"
+                          AutoGenerateColumns="False" Background="Transparent">
+                <DataGrid.Columns >
+                    <DataGridTemplateColumn Header="Education Degree" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Background="White" Margin="6, 3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding EducationDegree, Mode=TwoWay}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Name Of School" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding NameOfSchool, Mode=TwoWay}" Margin="6, 3"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Country" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Country, Mode=TwoWay}" Margin="6, 3"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="City" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding City, Mode=TwoWay}" Margin="6, 3"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Major" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Speciality, Mode=TwoWay}" Margin="6, 3"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="From" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="6, 3" SelectedDate="{Binding FromYear, Mode=TwoWay}"></DatePicker>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="To" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="6, 3" SelectedDate="{Binding ToYear, Mode=TwoWay}"></DatePicker>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Delete" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="3" Tag="{Binding EducationKey}" Click="DeleteButton_Clicked" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFlatButton}">
+                                    <Material:PackIcon Kind="Delete"></Material:PackIcon>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" 
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Click="EducationAddNewRow">
+                Add new row
+            </Button>
+        </Grid>
+        
+        <!--Foreign Language Information-->
+        <DataGrid Margin="10" x:Name="ForeignLanguageDatagrid" MaxHeight="450" Width="600" Grid.Row="2" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=LanguageItem}"
+                      CanUserAddRows="False"
+                          AutoGenerateColumns="False">
+            <DataGrid.Columns >
+                <DataGridTemplateColumn Header="Language" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Background="White" Margin="6, 3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding Language}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Speaking level" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Slider Value="{Binding SpeakingLevel}" Minimum="1" Maximum="5" Margin="6, 3"></Slider>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Listening Level" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Slider Value="{Binding ListeningLevel}" Minimum="1" Maximum="5" Margin="6, 3"></Slider>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Reading Level" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Slider Value="{Binding ReadingLevel}" Minimum="1" Maximum="5" Margin="6, 3"></Slider>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Writing Level" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Slider Value="{Binding WritingLevel}" Minimum="1" Maximum="5" Margin="6, 3"></Slider>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!--Practicing License information-->
+        <ScrollViewer MaxHeight="450" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=PracticingItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+
+                </Grid.RowDefinitions>
+
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Table header-->
+                    <TextBlock Text="Profestional Area" VerticalAlignment="Center" HorizontalAlignment="Stretch"  TextAlignment="Center" TextWrapping="Wrap" Background="LightBlue" Padding="3, 6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="License Number" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Padding="3, 6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="Date of Issue" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="2" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="Place of Issue" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="3" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="Date of Expiration" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="4" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+
+                    <!--First row-->
+                    <ComboBox Grid.Row="1" Grid.Column="0" Margin="3, 6"></ComboBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="3, 6"></TextBox>
+                    <DatePicker Grid.Row="1" Grid.Column="2" Margin="3, 6"></DatePicker>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="3, 6"></TextBox>
+                    <DatePicker Grid.Row="1" Grid.Column="4" Margin="3, 6"></DatePicker>
+                </Grid>
+
+                <StackPanel Grid.Row="1" HorizontalAlignment="Right" Margin="10, 6" Orientation="Horizontal">
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Material:PackIcon VerticalAlignment="Center" Kind="Plus"></Material:PackIcon>
+                            <TextBlock Text="Add row"></TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+        </ScrollViewer>
+
+        <!--Experiences information-->
+        <ScrollViewer MaxHeight="450" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ExperienceItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+
+                </Grid.RowDefinitions>
+
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Table header-->
+                    <TextBlock Text="Organization name" VerticalAlignment="Center" HorizontalAlignment="Stretch"  TextAlignment="Center" TextWrapping="Wrap" Background="LightBlue" Padding="3, 6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="From Year" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Padding="3, 6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="To Year" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="2" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="Job Title" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="3" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+                    <TextBlock Text="Resignation reason" Background="LightBlue" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="4" TextWrapping="Wrap" Padding="3,6" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+
+                    <!--First row-->
+                    <TextBox Grid.Row="1" Grid.Column="0" Margin="3, 6"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="3, 6"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="2" Margin="3, 6"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="3, 6"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="4" Margin="3, 6"></TextBox>
+                </Grid>
+
+                <StackPanel Grid.Row="1" HorizontalAlignment="Right" Margin="10, 6" Orientation="Horizontal">
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Material:PackIcon VerticalAlignment="Center" Kind="Plus"></Material:PackIcon>
+                            <TextBlock Text="Add row"></TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+        </ScrollViewer>
+
+
+
+        <Border Margin="10, 10, 10, 0" BorderBrush="{DynamicResource PrimaryHueMidBrush}"  Grid.Row="3" BorderThickness="0, 2, 0, 0">
+            <DockPanel>
+                <Button DockPanel.Dock="Left" x:Name="CloseButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" Style="{DynamicResource MaterialDesignRaisedLightButton}" Click="CloseButton_Click">
+                    Close
+                </Button>
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        Click="AddUserButtonClicked"
+                        VerticalAlignment="Center" Margin="10" Style="{DynamicResource MaterialDesignRaisedButton}">
+                    Add User
+                </Button>
+            </DockPanel>
+        </Border>
+
+        <Material:DialogHost x:Name="DialogHost" Grid.RowSpan="3" Grid.Row="1" Visibility="Collapsed" IsOpen="False" />
+
+    </Grid>
+</UserControl>

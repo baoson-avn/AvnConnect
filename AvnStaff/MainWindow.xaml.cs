@@ -12,25 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 
-namespace AvnConnect
+namespace AvnStaff
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : Window
     {
-        public Data.ConnectContainer DataConn;
-        public string StaffKey;
-
-
-
         public MainWindow()
         {
             InitializeComponent();
-            StaffKey = Encryption.GetUniqueKey(16);
-            this.DataConn = new Data.ConnectContainer();
         }
     }
 }

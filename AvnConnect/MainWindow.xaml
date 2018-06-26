@@ -6,6 +6,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:AvnConnect"
                    BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                   xmlns:MyStaff="clr-namespace:AvnConnect.Staffs"
                    BorderThickness="1"
                    WindowState="Maximized"
                    TitleCaps="False"        
@@ -33,11 +34,14 @@
         </Grid.RowDefinitions>
 
         <!--Thanh điều hướng-->
-        <Grid Grid.Row="0" TextBlock.Foreground="White">
-            <Grid.Background>
-                <SolidColorBrush Color="{DynamicResource Primary800}"></SolidColorBrush>
-            </Grid.Background>
-         </Grid>
-     
+        <DockPanel Grid.Row="0" TextBlock.Foreground="White" Height="Auto">
+            <DockPanel.Background>
+                <SolidColorBrush Color="#334863"></SolidColorBrush>
+            </DockPanel.Background>
+            <TextBlock Margin="20, 10" Text="AVN Connect" Style="{DynamicResource MaterialDesignDisplay2TextBlock}"></TextBlock>
+            
+         </DockPanel>
+
+        <MyStaff:StaffViewer Grid.Row="1"></MyStaff:StaffViewer>
     </Grid>
 </metro:MetroWindow>
