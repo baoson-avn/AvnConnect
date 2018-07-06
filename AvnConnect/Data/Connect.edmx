@@ -13,6 +13,13 @@
     <EntitySet Name="ForeignLanguages" EntityType="Connect.Store.ForeignLanguages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PracticingLicenses" EntityType="Connect.Store.PracticingLicenses" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="WorkingExperiences" EntityType="Connect.Store.WorkingExperiences" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProfesstionalAreas" EntityType="Connect.Store.ProfesstionalAreas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Permissions" EntityType="Connect.Store.Permissions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Categories" EntityType="Connect.Store.Categories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Projects" EntityType="Connect.Store.Projects" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProjectStaffs" EntityType="Connect.Store.ProjectStaffs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserProjectPermissions" EntityType="Connect.Store.UserProjectPermissions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProjectActivities" EntityType="Connect.Store.ProjectActivities" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="Staffs">
     <Key>
@@ -55,7 +62,7 @@
     <Property Name="Avatar" Type="nvarchar(max)" Nullable="true" />
     <Property Name="AddedOn" Type="datetime" Nullable="false" />
     <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ModifiedOn" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Password" Type="nchar" Nullable="false" MaxLength="32" />
   </EntityType>
@@ -115,6 +122,7 @@
     <Property Name="Status" Type="nvarchar(max)" Nullable="true" />
     <Property Name="PlaceOfIssue" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ProfessionalArea" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="WorkingExperiences">
     <Key>
@@ -123,11 +131,119 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StaffKey" Type="nvarchar(max)" Nullable="false" />
     <Property Name="NameOfCompany" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="FromTime" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ToTime" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CurrentlyWorking" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FromTime" Type="datetime" Nullable="true" />
+    <Property Name="ToTime" Type="datetime" Nullable="true" />
     <Property Name="Jobtitle" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ResignationReason" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ResignationReason" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProfesstionalAreas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Permissions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StaffKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="CanAddProject" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanManageStaff" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="GiveFutureAccess" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="ManageDepartment" Type="bit" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Color" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ParentKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedOn" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BindToCustomer" Type="bit" Nullable="true" DefaultValue="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="true" />
+    <Property Name="EndDate" Type="datetime" Nullable="true" />
+    <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedOn" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
+    <Property Name="Category" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Tag" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ProjectOwner" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsStared" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="IsArchived" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="ArchivedBy" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ArchivedOn" Type="datetime" Nullable="true" />
+    <Property Name="IsCompleted" Type="bit" Nullable="false" />
+    <Property Name="CompletedOn" Type="datetime" Nullable="true" />
+    <Property Name="CompletedBy" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ProjectStaffs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProjectKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StaffKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedOn" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PermissionKey" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserProjectPermissions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectStaffKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="CanViewUpdate" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanAddUpdate" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="CanViewTask" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanViewEstimatedTime" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanCreateTask" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanUpdateAllTask" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="CanViewMessageAndFile" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanUpdateMessageAndFile" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanViewNoteBook" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanUpdateNoteBook" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanViewLinks" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanAddLinks" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="CanViewRisk" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="CanUpdateRisk" Type="bit" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="ProjectActivities">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ByStaff" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HappenedOn" Type="datetime" Nullable="false" />
+    <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -141,6 +257,13 @@
           <EntitySet Name="ForeignLanguages" EntityType="Connect.ForeignLanguage" />
           <EntitySet Name="PracticingLicenses" EntityType="Connect.PracticingLicense" />
           <EntitySet Name="WorkingExperiences" EntityType="Connect.WorkingExperience" />
+          <EntitySet Name="ProfesstionalAreas" EntityType="Connect.ProfesstionalArea" />
+          <EntitySet Name="Permissions" EntityType="Connect.Permission" />
+          <EntitySet Name="Categories" EntityType="Connect.Category" />
+          <EntitySet Name="Projects" EntityType="Connect.Project" />
+          <EntitySet Name="ProjectStaffs" EntityType="Connect.ProjectStaffs" />
+          <EntitySet Name="UserProjectPermissions" EntityType="Connect.UserProjectPermission" />
+          <EntitySet Name="ProjectActivities" EntityType="Connect.ProjectActivity" />
         </EntityContainer>
         <EntityType Name="Staff">
           <Key>
@@ -183,7 +306,7 @@
           <Property Name="Avatar" Type="String" Nullable="true" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" />
           <Property Name="AddedBy" Type="String" Nullable="false" />
-          <Property Name="ModifiedOn" Type="String" Nullable="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" />
           <Property Name="ModifiedBy" Type="String" Nullable="false" />
           <Property Name="Password" Type="String" Nullable="false" FixedLength="true" MaxLength="32" />
         </EntityType>
@@ -243,6 +366,7 @@
           <Property Name="Status" Type="String" Nullable="true" />
           <Property Name="PlaceOfIssue" Type="String" Nullable="true" />
           <Property Name="ProfessionalArea" Type="String" Nullable="true" />
+          <Property Name="Key" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkingExperience">
           <Key>
@@ -251,11 +375,119 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StaffKey" Type="String" Nullable="false" />
           <Property Name="NameOfCompany" Type="String" Nullable="false" />
-          <Property Name="FromTime" Type="String" Nullable="false" />
-          <Property Name="ToTime" Type="String" Nullable="false" />
-          <Property Name="CurrentlyWorking" Type="String" Nullable="false" />
+          <Property Name="FromTime" Type="DateTime" Nullable="true" />
+          <Property Name="ToTime" Type="DateTime" Nullable="true" />
           <Property Name="Jobtitle" Type="String" Nullable="false" />
-          <Property Name="ResignationReason" Type="String" Nullable="false" />
+          <Property Name="ResignationReason" Type="String" Nullable="true" />
+          <Property Name="Key" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProfesstionalArea">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="StaffKey" Type="String" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="CanAddProject" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanManageStaff" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="GiveFutureAccess" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="ManageDepartment" Type="Boolean" Nullable="false" DefaultValue="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Color" Type="String" Nullable="false" />
+          <Property Name="ParentKey" Type="String" Nullable="false" />
+          <Property Name="AddedBy" Type="String" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="true" />
+          <Property Name="BindToCustomer" Type="Boolean" DefaultValue="false" Nullable="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="true" />
+          <Property Name="EndDate" Type="DateTime" Nullable="true" />
+          <Property Name="AddedBy" Type="String" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" />
+          <Property Name="Category" Type="String" Nullable="true" />
+          <Property Name="Tag" Type="String" Nullable="true" />
+          <Property Name="ProjectOwner" Type="String" Nullable="false" />
+          <Property Name="IsStared" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="ArchivedBy" Type="String" Nullable="true" />
+          <Property Name="ArchivedOn" Type="DateTime" Nullable="true" />
+          <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+          <Property Name="CompletedOn" Type="DateTime" Nullable="true" />
+          <Property Name="CompletedBy" Type="String" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ProjectStaffs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="ProjectKey" Type="String" Nullable="false" />
+          <Property Name="StaffKey" Type="String" Nullable="false" />
+          <Property Name="AddedBy" Type="String" Nullable="false" />
+          <Property Name="AddedOn" Type="String" Nullable="false" />
+          <Property Name="PermissionKey" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProjectPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectStaffKey" Type="String" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="CanViewUpdate" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanAddUpdate" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="CanViewTask" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanViewEstimatedTime" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanCreateTask" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanUpdateAllTask" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="CanViewMessageAndFile" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanUpdateMessageAndFile" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanViewNoteBook" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanUpdateNoteBook" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanViewLinks" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanAddLinks" Type="Boolean" Nullable="false" DefaultValue="true" />
+          <Property Name="CanViewRisk" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <Property Name="CanUpdateRisk" Type="Boolean" Nullable="false" DefaultValue="false" />
+        </EntityType>
+        <EntityType Name="ProjectActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectKey" Type="String" Nullable="false" />
+          <Property Name="ByStaff" Type="String" Nullable="false" />
+          <Property Name="HappenedOn" Type="DateTime" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -368,6 +600,7 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="PlaceOfIssue" ColumnName="PlaceOfIssue" />
           <ScalarProperty Name="ProfessionalArea" ColumnName="ProfessionalArea" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -379,9 +612,124 @@
           <ScalarProperty Name="NameOfCompany" ColumnName="NameOfCompany" />
           <ScalarProperty Name="FromTime" ColumnName="FromTime" />
           <ScalarProperty Name="ToTime" ColumnName="ToTime" />
-          <ScalarProperty Name="CurrentlyWorking" ColumnName="CurrentlyWorking" />
           <ScalarProperty Name="Jobtitle" ColumnName="Jobtitle" />
           <ScalarProperty Name="ResignationReason" ColumnName="ResignationReason" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProfesstionalAreas">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.ProfesstionalArea)">
+        <MappingFragment StoreEntitySet="ProfesstionalAreas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Permissions">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Permission)">
+        <MappingFragment StoreEntitySet="Permissions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="CanAddProject" ColumnName="CanAddProject" />
+          <ScalarProperty Name="CanManageStaff" ColumnName="CanManageStaff" />
+          <ScalarProperty Name="GiveFutureAccess" ColumnName="GiveFutureAccess" />
+          <ScalarProperty Name="ManageDepartment" ColumnName="ManageDepartment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Category)">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="ParentKey" ColumnName="ParentKey" />
+          <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+          <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Project)">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="BindToCustomer" ColumnName="BindToCustomer" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+          <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Tag" ColumnName="Tag" />
+          <ScalarProperty Name="ProjectOwner" ColumnName="ProjectOwner" />
+          <ScalarProperty Name="IsStared" ColumnName="IsStared" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+          <ScalarProperty Name="ArchivedBy" ColumnName="ArchivedBy" />
+          <ScalarProperty Name="ArchivedOn" ColumnName="ArchivedOn" />
+          <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+          <ScalarProperty Name="CompletedOn" ColumnName="CompletedOn" />
+          <ScalarProperty Name="CompletedBy" ColumnName="CompletedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectStaffs">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.ProjectStaffs)">
+        <MappingFragment StoreEntitySet="ProjectStaffs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
+          <ScalarProperty Name="StaffKey" ColumnName="StaffKey" />
+          <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+          <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+          <ScalarProperty Name="PermissionKey" ColumnName="PermissionKey" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProjectPermissions">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.UserProjectPermission)">
+        <MappingFragment StoreEntitySet="UserProjectPermissions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProjectStaffKey" ColumnName="ProjectStaffKey" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="CanViewUpdate" ColumnName="CanViewUpdate" />
+          <ScalarProperty Name="CanAddUpdate" ColumnName="CanAddUpdate" />
+          <ScalarProperty Name="CanViewTask" ColumnName="CanViewTask" />
+          <ScalarProperty Name="CanViewEstimatedTime" ColumnName="CanViewEstimatedTime" />
+          <ScalarProperty Name="CanCreateTask" ColumnName="CanCreateTask" />
+          <ScalarProperty Name="CanUpdateAllTask" ColumnName="CanUpdateAllTask" />
+          <ScalarProperty Name="CanViewMessageAndFile" ColumnName="CanViewMessageAndFile" />
+          <ScalarProperty Name="CanUpdateMessageAndFile" ColumnName="CanUpdateMessageAndFile" />
+          <ScalarProperty Name="CanViewNoteBook" ColumnName="CanViewNoteBook" />
+          <ScalarProperty Name="CanUpdateNoteBook" ColumnName="CanUpdateNoteBook" />
+          <ScalarProperty Name="CanViewLinks" ColumnName="CanViewLinks" />
+          <ScalarProperty Name="CanAddLinks" ColumnName="CanAddLinks" />
+          <ScalarProperty Name="CanViewRisk" ColumnName="CanViewRisk" />
+          <ScalarProperty Name="CanUpdateRisk" ColumnName="CanUpdateRisk" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectActivities">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.ProjectActivity)">
+        <MappingFragment StoreEntitySet="ProjectActivities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
+          <ScalarProperty Name="ByStaff" ColumnName="ByStaff" />
+          <ScalarProperty Name="HappenedOn" ColumnName="HappenedOn" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="AvnConnect.Dialogs.ColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AvnConnect.Dialogs"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:dialog="clr-namespace:AvnConnect.Dialogs"
+             Background="White"
+             mc:Ignorable="d" 
+             Padding="10">
+    <StackPanel>
+        <TextBlock Text="Pick a color:" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+        <UniformGrid  Columns="5" x:Name="UniGrid" Rows="5" Height="150" Width="150">
+            <dialog:ColorButton ColorBrush="#27ae60" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#99df72" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#1abc9c" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#6866d0" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#8e44ad" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#0ad2f5" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#3498db" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#3498db" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#c0392b" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#e74c3c" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#a94136" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#660a00" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#f39c12" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#f1c40f" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#34495e" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#7f8c8d" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#d35400" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#b49255" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#d870ad" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#bdc3c7" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="#9b59b6" Margin="2"></dialog:ColorButton>
+            <dialog:ColorButton ColorBrush="DimGray" IsSelected="True" Margin="2"></dialog:ColorButton>
+        </UniformGrid>
+    </StackPanel>
+</UserControl>

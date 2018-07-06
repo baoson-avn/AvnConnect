@@ -12,15 +12,18 @@ namespace AvnConnect.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class PracticingLicense
+    public partial class Category
     {
         public int Id { get; set; }
-        public string StaffKey { get; set; }
-        public string LicenseNumber { get; set; }
-        public Nullable<System.DateTime> DateOfIssue { get; set; }
-        public string Status { get; set; }
-        public string PlaceOfIssue { get; set; }
-        public string ProfessionalArea { get; set; }
         public string Key { get; set; }
+        public string Name { get; set; }
+        public string Color { get; set; }
+        public string ParentKey { get; set; }
+        public string AddedBy { get; set; }
+        public System.DateTime AddedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public System.DateTime ModifiedOn { get; set; }
+        public bool IsDeleted { get; set; }
+        public int Level { get; set; }
     }
 }

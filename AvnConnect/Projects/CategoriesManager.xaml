@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="AvnConnect.Projects.CategoriesManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:AvnConnect.Projects"
+             xmlns:app="clr-namespace:AvnConnect"
+             Width="500"
+             MaxHeight="500"
+             MinHeight="350"
+             xmlns:converter="clr-namespace:AvnConnect.Converter"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <converter:CategoryNameToAbility x:Key="CategoryNameToAbility"></converter:CategoryNameToAbility>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Thanh tiêu đề-->
+        <DockPanel Background="{DynamicResource PrimaryHueDarkBrush}">
+            <Border Padding="6" DockPanel.Dock="Right" Margin="20, 10" Background="Transparent" ToolTip="Close" MouseLeftButtonUp="CloseButton_Click" VerticalAlignment="Center" Cursor="Hand">
+                <Material:PackIcon Kind="CloseBox" Foreground="White"></Material:PackIcon>
+            </Border>
+            <TextBlock Margin="20, 10" Text="Project Categories" Foreground="White" Style="{DynamicResource MaterialDesignDisplay1TextBlock}"></TextBlock>
+        </DockPanel>
+
+        <TreeView Background="White" 
+                  x:Name="ProjectCategoryTree"
+                  Grid.Column="0" Grid.Row="1">
+            <TreeView.ItemTemplate>
+               
+                <HierarchicalDataTemplate DataType="{x:Type local:CategoryItem}" ItemsSource="{Binding SubCategories}">
+               
+                    <Grid Width="400">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Material:PackIcon  Margin="10, 3" Kind="FolderOutline"></Material:PackIcon>
+                        <TextBlock Grid.Column="1" Margin="3" Text="{Binding Category.Name}" />
+                        <app:MyTextBlock Margin="3" 
+                                         Visibility="{Binding Category.Name, Converter={StaticResource CategoryNameToAbility}}" 
+                                         Tag="{Binding Category}"
+                                         Click="EditCategory_Click"
+                                         VerticalAlignment="Center" 
+                                         Grid.Column="2"
+                                         Text="Edit"/>
+                        <app:MyTextBlock Margin="3" 
+                                         Click="DeleteCategory_Click"
+                                         VerticalAlignment="Center" 
+                                         Visibility="{Binding Category.Name, Converter={StaticResource CategoryNameToAbility}}" 
+                                         Tag="{Binding Category}"
+                                         Grid.Column="3"
+                                         Text="Delete"/>
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <app:MyTextBlock Text="Add a Category" 
+                         Click="AddNewCategory_Clicked"
+                         Grid.Row="2" Margin="10, 5" HorizontalAlignment="Center"></app:MyTextBlock>
+
+        <DockPanel Grid.Row="3" Margin="10, 5, 10, 10">
+            <Button Content="Finish" DockPanel.Dock="Right" 
+                    Click="FinishButton_Click"
+                    Material:ShadowAssist.ShadowDepth="Depth0"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    HorizontalAlignment="Right"></Button>
+        </DockPanel>
+
+        <Material:DialogHost x:Name="MydialogHost" Grid.RowSpan="4" Visibility="Collapsed"></Material:DialogHost>
+        <Material:Snackbar x:Name="MySnackbar" HorizontalAlignment="Stretch"
+                                  MessageQueue="{Material:MessageQueue}"
+                                  Grid.Row="4"></Material:Snackbar>
+    </Grid>
+</UserControl>

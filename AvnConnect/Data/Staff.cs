@@ -51,7 +51,7 @@ namespace AvnConnect.Data
         public string Avatar { get; set; }
         public System.DateTime AddedOn { get; set; }
         public string AddedBy { get; set; }
-        public string ModifiedOn { get; set; }
+        public System.DateTime ModifiedOn { get; set; }
         public string ModifiedBy { get; set; }
         public string Password { get; set; }
     }

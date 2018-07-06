@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="AvnConnect.Dialogs.ConfirmDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AvnConnect.Dialogs"
+             Padding="32, 10"
+             mc:Ignorable="d" 
+             d:DataContext="AvnConnect.Dialogs.ConfirmDialog"
+             >
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Header}" Margin="0, 10, 0, 5" Style="{DynamicResource MaterialDesignTitleTextBlock}"></TextBlock>
+        <TextBlock TextWrapping="Wrap" Grid.Row="1" Text="{Binding Message}" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+        <DockPanel Margin="0, 15, 0, 5" Grid.Row="2" x:Name="ButtonDockPanel"></DockPanel>
+    </Grid>
+</UserControl>

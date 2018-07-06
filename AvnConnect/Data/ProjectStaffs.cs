@@ -12,15 +12,14 @@ namespace AvnConnect.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class PracticingLicense
+    public partial class ProjectStaffs
     {
         public int Id { get; set; }
-        public string StaffKey { get; set; }
-        public string LicenseNumber { get; set; }
-        public Nullable<System.DateTime> DateOfIssue { get; set; }
-        public string Status { get; set; }
-        public string PlaceOfIssue { get; set; }
-        public string ProfessionalArea { get; set; }
         public string Key { get; set; }
+        public string ProjectKey { get; set; }
+        public string StaffKey { get; set; }
+        public string AddedBy { get; set; }
+        public string AddedOn { get; set; }
+        public string PermissionKey { get; set; }
     }
 }

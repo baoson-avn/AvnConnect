@@ -17,10 +17,10 @@ namespace AvnConnect.Data
         public int Id { get; set; }
         public string StaffKey { get; set; }
         public string NameOfCompany { get; set; }
-        public string FromTime { get; set; }
-        public string ToTime { get; set; }
-        public string CurrentlyWorking { get; set; }
+        public Nullable<System.DateTime> FromTime { get; set; }
+        public Nullable<System.DateTime> ToTime { get; set; }
         public string Jobtitle { get; set; }
         public string ResignationReason { get; set; }
+        public string Key { get; set; }
     }
 }

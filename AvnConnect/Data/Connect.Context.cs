@@ -32,5 +32,12 @@ namespace AvnConnect.Data
         public virtual DbSet<ForeignLanguage> ForeignLanguages { get; set; }
         public virtual DbSet<PracticingLicense> PracticingLicenses { get; set; }
         public virtual DbSet<WorkingExperience> WorkingExperiences { get; set; }
+        public virtual DbSet<ProfesstionalArea> ProfesstionalAreas { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<ProjectStaffs> ProjectStaffs { get; set; }
+        public virtual DbSet<UserProjectPermission> UserProjectPermissions { get; set; }
+        public virtual DbSet<ProjectActivity> ProjectActivities { get; set; }
     }
 }

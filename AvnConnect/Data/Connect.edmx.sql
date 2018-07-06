@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/26/2018 08:24:09
+-- Date Created: 07/05/2018 14:17:35
 -- Generated from EDMX file: D:\Documents\Visual Studio 2015\Projects\AvnConnect\AvnConnect\Data\Connect.edmx
 -- --------------------------------------------------
 
@@ -42,6 +42,27 @@ IF OBJECT_ID(N'[dbo].[PracticingLicenses]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[WorkingExperiences]', 'U') IS NOT NULL
     DROP TABLE [dbo].[WorkingExperiences];
+GO
+IF OBJECT_ID(N'[dbo].[ProfesstionalAreas]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProfesstionalAreas];
+GO
+IF OBJECT_ID(N'[dbo].[Permissions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Permissions];
+GO
+IF OBJECT_ID(N'[dbo].[Categories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Categories];
+GO
+IF OBJECT_ID(N'[dbo].[Projects]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Projects];
+GO
+IF OBJECT_ID(N'[dbo].[ProjectStaffs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProjectStaffs];
+GO
+IF OBJECT_ID(N'[dbo].[UserProjectPermissions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserProjectPermissions];
+GO
+IF OBJECT_ID(N'[dbo].[ProjectActivities]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProjectActivities];
 GO
 
 -- --------------------------------------------------
@@ -87,7 +108,7 @@ CREATE TABLE [dbo].[Staffs] (
     [Avatar] nvarchar(max)  NULL,
     [AddedOn] datetime  NOT NULL,
     [AddedBy] nvarchar(max)  NOT NULL,
-    [ModifiedOn] nvarchar(max)  NOT NULL,
+    [ModifiedOn] datetime  NOT NULL,
     [ModifiedBy] nvarchar(max)  NOT NULL,
     [Password] nchar(32)  NOT NULL
 );
@@ -146,7 +167,8 @@ CREATE TABLE [dbo].[PracticingLicenses] (
     [DateOfIssue] datetime  NULL,
     [Status] nvarchar(max)  NULL,
     [PlaceOfIssue] nvarchar(max)  NULL,
-    [ProfessionalArea] nvarchar(max)  NULL
+    [ProfessionalArea] nvarchar(max)  NULL,
+    [Key] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -155,11 +177,119 @@ CREATE TABLE [dbo].[WorkingExperiences] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [StaffKey] nvarchar(max)  NOT NULL,
     [NameOfCompany] nvarchar(max)  NOT NULL,
-    [FromTime] nvarchar(max)  NOT NULL,
-    [ToTime] nvarchar(max)  NOT NULL,
-    [CurrentlyWorking] nvarchar(max)  NOT NULL,
+    [FromTime] datetime  NULL,
+    [ToTime] datetime  NULL,
     [Jobtitle] nvarchar(max)  NOT NULL,
-    [ResignationReason] nvarchar(max)  NOT NULL
+    [ResignationReason] nvarchar(max)  NULL,
+    [Key] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'ProfesstionalAreas'
+CREATE TABLE [dbo].[ProfesstionalAreas] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Key] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'Permissions'
+CREATE TABLE [dbo].[Permissions] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Key] nvarchar(max)  NOT NULL,
+    [StaffKey] nvarchar(max)  NOT NULL,
+    [IsAdmin] bit  NOT NULL,
+    [CanAddProject] bit  NOT NULL,
+    [CanManageStaff] bit  NOT NULL,
+    [GiveFutureAccess] bit  NOT NULL,
+    [ManageDepartment] bit  NOT NULL
+);
+GO
+
+-- Creating table 'Categories'
+CREATE TABLE [dbo].[Categories] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Key] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Color] nvarchar(max)  NOT NULL,
+    [ParentKey] nvarchar(max)  NOT NULL,
+    [AddedBy] nvarchar(max)  NOT NULL,
+    [AddedOn] datetime  NOT NULL,
+    [ModifiedBy] nvarchar(max)  NOT NULL,
+    [ModifiedOn] datetime  NOT NULL,
+    [IsDeleted] bit  NOT NULL,
+    [Level] int  NOT NULL
+);
+GO
+
+-- Creating table 'Projects'
+CREATE TABLE [dbo].[Projects] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Key] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Description] nvarchar(max)  NULL,
+    [BindToCustomer] bit  NULL,
+    [StartDate] datetime  NULL,
+    [EndDate] datetime  NULL,
+    [AddedBy] nvarchar(max)  NOT NULL,
+    [AddedOn] datetime  NOT NULL,
+    [ModifiedBy] nvarchar(max)  NOT NULL,
+    [ModifiedOn] datetime  NOT NULL,
+    [Category] nvarchar(max)  NULL,
+    [Tag] nvarchar(max)  NULL,
+    [ProjectOwner] nvarchar(max)  NOT NULL,
+    [IsStared] bit  NOT NULL,
+    [IsDeleted] bit  NOT NULL,
+    [IsArchived] bit  NOT NULL,
+    [ArchivedBy] nvarchar(max)  NULL,
+    [ArchivedOn] datetime  NULL,
+    [IsCompleted] bit  NOT NULL,
+    [CompletedOn] datetime  NULL,
+    [CompletedBy] nvarchar(max)  NULL
+);
+GO
+
+-- Creating table 'ProjectStaffs'
+CREATE TABLE [dbo].[ProjectStaffs] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Key] nvarchar(max)  NOT NULL,
+    [ProjectKey] nvarchar(max)  NOT NULL,
+    [StaffKey] nvarchar(max)  NOT NULL,
+    [AddedBy] nvarchar(max)  NOT NULL,
+    [AddedOn] nvarchar(max)  NOT NULL,
+    [PermissionKey] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'UserProjectPermissions'
+CREATE TABLE [dbo].[UserProjectPermissions] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ProjectStaffKey] nvarchar(max)  NOT NULL,
+    [IsAdmin] bit  NOT NULL,
+    [CanViewUpdate] bit  NOT NULL,
+    [CanAddUpdate] bit  NOT NULL,
+    [CanViewTask] bit  NOT NULL,
+    [CanViewEstimatedTime] bit  NOT NULL,
+    [CanCreateTask] bit  NOT NULL,
+    [CanUpdateAllTask] bit  NOT NULL,
+    [CanViewMessageAndFile] bit  NOT NULL,
+    [CanUpdateMessageAndFile] bit  NOT NULL,
+    [CanViewNoteBook] bit  NOT NULL,
+    [CanUpdateNoteBook] bit  NOT NULL,
+    [CanViewLinks] bit  NOT NULL,
+    [CanAddLinks] bit  NOT NULL,
+    [CanViewRisk] bit  NOT NULL,
+    [CanUpdateRisk] bit  NOT NULL
+);
+GO
+
+-- Creating table 'ProjectActivities'
+CREATE TABLE [dbo].[ProjectActivities] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ProjectKey] nvarchar(max)  NOT NULL,
+    [ByStaff] nvarchar(max)  NOT NULL,
+    [HappenedOn] datetime  NOT NULL,
+    [Message] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -206,6 +336,48 @@ GO
 -- Creating primary key on [Id] in table 'WorkingExperiences'
 ALTER TABLE [dbo].[WorkingExperiences]
 ADD CONSTRAINT [PK_WorkingExperiences]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ProfesstionalAreas'
+ALTER TABLE [dbo].[ProfesstionalAreas]
+ADD CONSTRAINT [PK_ProfesstionalAreas]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Permissions'
+ALTER TABLE [dbo].[Permissions]
+ADD CONSTRAINT [PK_Permissions]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Categories'
+ALTER TABLE [dbo].[Categories]
+ADD CONSTRAINT [PK_Categories]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Projects'
+ALTER TABLE [dbo].[Projects]
+ADD CONSTRAINT [PK_Projects]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ProjectStaffs'
+ALTER TABLE [dbo].[ProjectStaffs]
+ADD CONSTRAINT [PK_ProjectStaffs]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UserProjectPermissions'
+ALTER TABLE [dbo].[UserProjectPermissions]
+ADD CONSTRAINT [PK_UserProjectPermissions]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ProjectActivities'
+ALTER TABLE [dbo].[ProjectActivities]
+ADD CONSTRAINT [PK_ProjectActivities]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

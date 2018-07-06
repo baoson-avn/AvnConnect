@@ -23,16 +23,31 @@ namespace AvnConnect.Staffs
     public partial class AddStaff : UserControl
     {
         public event EventHandler Closing;
+        public event EventHandler StaffAdded;
+        private bool IsEditing = false ;
 
-        public Data.MyStaff MyStaff
+
+        public System.Collections.IList JobTitleDbset
         {
-            get { return (Data.MyStaff)GetValue(MyStaffProperty); }
-            set { SetValue(MyStaffProperty, value); }
+            get { return (System.Collections.IList)GetValue(JobTitleDbsetProperty); }
+            set { SetValue(JobTitleDbsetProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for MyStaff.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MyStaffProperty =
-            DependencyProperty.Register("MyStaff", typeof(Data.MyStaff), typeof(AddStaff), new PropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for JobTitleDbset.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty JobTitleDbsetProperty =
+            DependencyProperty.Register("JobTitleDbset", typeof(System.Collections.IList), typeof(AddStaff), new PropertyMetadata(null));
+
+
+        public System.Collections.IList DepartmentDbset
+        {
+            get { return (System.Collections.IList)GetValue(DepartmentDbsetProperty); }
+            set { SetValue(DepartmentDbsetProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DepartmentDbset.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DepartmentDbsetProperty =
+            DependencyProperty.Register("DepartmentDbset", typeof(System.Collections.IList), typeof(AddStaff), new PropertyMetadata(null));
+
 
 
         private ConnectContainer Conn;
@@ -41,6 +56,17 @@ namespace AvnConnect.Staffs
         private DbSet LanguageDbset;
         private DbSet JobTitleDataSet;
         private DbSet DepartmentDataSet;
+        private DbSet PersonalDataset;
+        private ComboBox JobTitleCombobox;
+        private ComboBox DepartmentCombobox;
+        private ComboBox MaritalStatusCombobox;
+        private ComboBox GenderCombobox;
+        private string StaffKey;
+        private DbSet LicenseDbset;
+        private DbSet ProfessionalDbset;
+        private Staff MyStaff;
+        private DbSet ExpDbset;
+        private DbSet PermissionDbset;
 
 
         /// <summary>
@@ -49,17 +75,18 @@ namespace AvnConnect.Staffs
         public AddStaff()
         {
             InitializeComponent();
-            this.DataContext = this;
-
-            //Tạo instance của class MyStaff
-            this.MyStaff = new Data.MyStaff();
-
-            //Tạo key cho nhân viên
-            this.MyStaff.Key = Encryption.GetUniqueKey(16);
-
-            //Tải thông tin từ database
-            this.BindingDatabase();
+            this.StaffKey = Encryption.GetUniqueKey(16);
+            this.MainWindow = (MainWindow)App.Current.MainWindow;
+            this.Loaded += AddStaff_Loaded;
         }
+
+        private void AddStaff_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = this;
+            this.ShowLoading();
+        }
+
+
 
 
         /// <summary>
@@ -69,70 +96,163 @@ namespace AvnConnect.Staffs
         public AddStaff(Data.Staff Staff)
         {
             InitializeComponent();
-            this.MyStaff.FromEframeStaff(Staff);
+            this.MyStaff = Staff;
+            this.IsEditing = true;
             this.DataContext = this;
+            this.StaffKey = MyStaff.Key;
+            this.BindingDatabase();
         }
 
 
         /// <summary>
         /// Create a dataset from database and bind to datagrid view
         /// </summary>
-        private async void BindingDatabase()
+        private void BindingDatabase()
         {
             //Lấy tham chiếu đến Database Entity Model
             if (this.Conn == null)
             {
-                this.MainWindow = (MainWindow)App.Current.MainWindow;
-                this.Conn = this.MainWindow.DataConn;
+                this.Conn = new Data.ConnectContainer ();
+            }
+
+            //Personal information
+            if (this.PersonalDataset == null)
+            {
+                this.PersonalDataset = Conn.Set(typeof(Data.Staff));
+
+                if (this.IsEditing)
+                {
+                    var Personal = Conn.Staffs.Where(stf => stf.Key == this.StaffKey);
+                    foreach (var item in Personal)
+                    {
+                        PersonalDataset.Attach(item);
+                    }
+                }
+                
+                if (this.PersonalDataset.Local.Count == 0)
+                {
+                    var newPs = this.PersonalDataset.Create();
+                    Staff C = (Staff)newPs;
+                    C.Key = this.StaffKey;
+                    this.PersonalDataset.Local.Add(newPs);
+                }
+                this.PersonalDatagrid.ItemsSource = PersonalDataset.Local;
             }
 
             //Chức vụ
             if (this.JobTitleDataSet ==null)
             {
                 this.JobTitleDataSet = Conn.Set(typeof(Data.JobTitles));
-                await JobTitleDataSet.LoadAsync();
-                Console.WriteLine("Jobtitle Loaded and binded to combobox");
-                this.JobTitleCombobox.DisplayMemberPath = "Title";
-                this.JobTitleCombobox.ItemsSource = JobTitleDataSet.Local;
+                JobTitleDataSet.Load();
+                this.JobTitleDbset = JobTitleDataSet.Local;
             }
 
             //Phòng ban
             if (this.DepartmentDataSet == null)
             {
                 this.DepartmentDataSet = Conn.Set(typeof(Data.Department));
-                await DepartmentDataSet.LoadAsync();
-                Console.WriteLine("Jobtitle Loaded and binded to combobox");
-                this.DepartmentCombobox.DisplayMemberPath = "DepartmentName";
-                this.DepartmentCombobox.ItemsSource = DepartmentDataSet.Local;
+                DepartmentDataSet.Load();
+                this.DepartmentDbset = DepartmentDataSet.Local;
             }
 
             //Học vấn
             if (this.EducationDbset == null)
             {
-                var Edus = Conn.Educations.Where(edu => edu.StaffKey == this.MainWindow.StaffKey);
-
+                var Edus = Conn.Educations.Where(edu => edu.StaffKey == this.StaffKey);
                 this.EducationDbset = Conn.Set(typeof(Data.Education));
                 foreach (var item in Edus)
                 {
                     EducationDbset.Attach(item);
                 }
                 this.EducationGrid.ItemsSource = EducationDbset.Local;
-                if (this.EducationGrid.Items.Count == 0)
-                {
-                    this.CreateNewRow_Education();
-                }
             }
 
-            ////Ngoại ngữ
-            //if (this.LanguageDbset == null)
-            //{
-            //    this.LanguageDbset = Conn.Set(typeof(Data.ForeignLanguage));
-            //    await LanguageDbset.LoadAsync();
-            //    this.ForeignLanguageDatagrid.ItemsSource = this.LanguageDbset.Local;
-            //}
+            //Ngoại ngữ
+            if (this.LanguageDbset == null)
+            {
+                var Language = Conn.ForeignLanguages.Where(lg => lg.StaffKey == this.StaffKey);
+                this.LanguageDbset = Conn.Set(typeof(Data.ForeignLanguage));
+                foreach (var item in Language)
+                {
+                    LanguageDbset.Attach(item);
+                }
+                this.ForeignLanguageDatagrid.ItemsSource = this.LanguageDbset.Local;
+            }
+
+            //Lĩnh vực chuyên môn
+            if (this.ProfessionalDbset == null)
+            {
+                this.ProfessionalDbset = Conn.Set(typeof(Data.ProfesstionalArea));
+                ProfessionalDbset.Load();
+            }
+
+            //Giấy phép hành nghề
+            if (this.LicenseDbset == null)
+            {
+                var Licenses = Conn.PracticingLicenses.Where(lc => lc.StaffKey == this.StaffKey);
+                this.LicenseDbset = Conn.Set(typeof(Data.PracticingLicense));
+                foreach (var item in Licenses)
+                {
+                    LicenseDbset.Attach(item);
+                }
+                this.PracticingDatagrid.ItemsSource = this.LicenseDbset.Local;
+            }
+
+            //Kinh nghiệm làm việc
+            if (this.ExpDbset == null)
+            {
+                var Exps = Conn.WorkingExperiences.Where(exp => exp.StaffKey == this.StaffKey);
+                this.ExpDbset = Conn.Set(typeof(Data.WorkingExperience));
+                foreach (var item in Exps)
+                {
+                    ExpDbset.Attach(item);
+                }
+                this.ExperienceGrid.ItemsSource = this.ExpDbset.Local;
+            }
+
+            //Phan quyen
+            if (this.PermissionDbset == null)
+            {
+                var Permission = Conn.Permissions.Where(pm => pm.StaffKey == this.StaffKey);
+                this.PermissionDbset = Conn.Set(typeof(Data.Permission));
+                foreach (var item in Permission)
+                {
+                    PermissionDbset.Attach(item);
+                }
+                this.PermissionGrid.ItemsSource = PermissionDbset.Local;
+                if (PermissionDbset.Local.Count == 0)
+                {
+                    Data.Permission myPermission = (Data.Permission)PermissionDbset.Create();
+                    myPermission.StaffKey = this.StaffKey;
+                    myPermission.Key = Encryption.GetUniqueKey(16);
+                    this.PermissionDbset.Local.Add(myPermission);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show the loading progressbar
+        /// </summary>
+        private void ShowLoading()
+        {
+            ProgressBar Progress = new ProgressBar();
+            Progress.Style = (Style)this.FindResource("MaterialDesignCircularProgressBar");
+            Progress.IsIndeterminate = true;
+            Progress.Value = 35;
+            Progress.Margin = new Thickness(30);
+            Progress.Maximum = 100;
+            Progress.MinHeight = 100;
+            Progress.MinWidth = 100;
 
 
+            this.DialogHost.DialogContent = Progress;
+            this.DialogHost.Visibility = Visibility.Visible;
+            this.DialogHost.IsOpen = true;
 
+            //Tải thông tin từ database
+            this.BindingDatabase();
+
+            this.CloseDialog();
         }
 
 
@@ -149,44 +269,16 @@ namespace AvnConnect.Staffs
         #region EDUCATION
 
 
-        /// <summary>
-        /// Thêm 1 dòng mới để nhập thông tin học vấn
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EducationAddNewRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Conn.ChangeTracker.DetectChanges();
-            try
-            {
-                var changes = this.Conn.ChangeTracker.Entries<Data.Education>();
-                foreach (var item in changes)
-                {
-                    item.Entity.StaffKey = this.MainWindow.StaffKey;
-                    if (item.Entity.EducationKey == null || item.Entity.EducationKey == "")
-                    {
-                        item.Entity.EducationKey = Encryption.GetUniqueKey(16);
-                    }
-                }
-                Console.WriteLine("Database updated. {0} row(s) changed!", this.Conn.SaveChanges());
-            }
-            catch (Exception ex)
-            {
-                this.Closing?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        /// <summary>
+               /// <summary>
         /// Delete education record 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteButton_Clicked(object sender, RoutedEventArgs e)
+        private void EducationDeleteButton_Clicked(object sender, RoutedEventArgs e)
         {
             Button Btn = sender as Button;
             Console.WriteLine("Deleting Education Key: {0}", Btn.Tag.ToString());
             DeleteEducationRow(Btn.Tag.ToString());
-
         }
 
         /// <summary>
@@ -224,23 +316,19 @@ namespace AvnConnect.Staffs
             var newEdu = this.EducationDbset.Create();
             Education C = (Education)newEdu;
             C.EducationKey = Encryption.GetUniqueKey(16);
-            C.StaffKey = this.MainWindow.StaffKey;
+            C.StaffKey = this.StaffKey;
             this.EducationDbset.Local.Add(newEdu);
         }
-
-        #endregion
-
 
         private void EducationGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             Console.WriteLine("EducationGrid_RowEditEnding");
         }
 
-        private void ForeignDatagrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            Console.WriteLine(e.NewItem.GetType().ToString());
-        }
 
+        #endregion
+
+        #region PERSONAL
 
         /// <summary>
         /// Select the listboxitem that control display of UI elements
@@ -263,6 +351,278 @@ namespace AvnConnect.Staffs
             }
         }
 
+        /// <summary>
+        /// Khi thay đổi lựa chọn jobtitle thì bind vào Personal Instance
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void JobTitleComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Personal = (Data.Staff)this.PersonalDataset.Local[0];
+            ComboBox b = (ComboBox)sender;
+            Personal.JobTitle = ((Data.JobTitles)b.SelectedValue).Title;
+        }
+
+        /// <summary>
+        /// Lấy ref đến jobtile combobox, sử dụng để load giá trị hiện tại của jobtitle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void JobTitleCombobox_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.JobTitleCombobox = (ComboBox)sender;
+        }
+
+
+        private void DepartmentCombobox_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DepartmentCombobox = (ComboBox)sender;
+        }
+
+        private void DepartmentCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Personal = (Data.Staff)this.PersonalDataset.Local[0];
+            Personal.Department = ((Data.Department)this.DepartmentCombobox.SelectedValue).DepartmentName;
+        }
+
+
+        private void MaritalCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Personal = (Data.Staff)this.PersonalDataset.Local[0];
+            this.MaritalStatusCombobox = (ComboBox)sender;
+            Personal.MaritalStatus = (this.MaritalStatusCombobox.SelectedValue).ToString();
+        }
+
+        private void GenderCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Personal = (Data.Staff)this.PersonalDataset.Local[0];
+            this.GenderCombobox = (ComboBox)sender;
+            Personal.Gender = (this.GenderCombobox.SelectedIndex == 0);
+        }
+
+        #endregion
+
+        #region FOREIGN LANGUAGE
+        private void LanguageDeleteButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button Btn = sender as Button;
+            Console.WriteLine("Deleting Language Key: {0}", Btn.Tag.ToString());
+            DeleteLanguageRow(Btn.Tag.ToString());
+        }
+
+        private void DeleteLanguageRow(string v)
+        {
+            foreach (Data.ForeignLanguage item in LanguageDbset.Local)
+            {
+                if (item.Key == v)
+                {
+                    LanguageDbset.Local.Remove(item);
+                    break;
+                }
+            }
+        }
+
+        private void LanguageAddNew_Clicked(object sender, RoutedEventArgs e)
+        {
+            CreateNewRow_Language();
+        }
+
+        private void CreateNewRow_Language()
+        {
+            var newLan = this.LanguageDbset.Create();
+            ForeignLanguage C = (ForeignLanguage)newLan;
+            C.Key = Encryption.GetUniqueKey(16);
+            C.StaffKey = this.StaffKey;
+            this.LanguageDbset.Local.Add(newLan);
+        }
+        #endregion
+
+        #region PRACTICING LICENSES
+
+        private void AddNewAreaButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            AskForText newAreaDialog = new Staffs.AskForText();
+            newAreaDialog.SetHeaderText("New Professional Area:");
+            newAreaDialog.Canceled += newAreaDialog_Canceled;
+            newAreaDialog.Confirmed += newAreaDialog_Confirmed;
+            this.DialogHost.DialogContent = newAreaDialog;
+            this.DialogHost.Visibility = Visibility.Visible;
+            this.DialogHost.IsOpen = true;
+        }
+
+        private void newAreaDialog_Confirmed(object sender, EventArgs e)
+        {
+            try
+            {
+                AskForText newAreaDialog = (AskForText)sender;
+                string newTitle = newAreaDialog.Value;
+                this.CloseDialog();
+
+                if (this.ProfessionalDbset != null)
+                {
+                    ProfesstionalArea newPa = new ProfesstionalArea()
+                    {
+                        Key = Encryption.GetUniqueKey(16),
+                        Name = newTitle
+                    };
+
+                    this.ProfessionalDbset.Add(newPa);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("newAreaDialog_Confirmed: {0}", ex.Message);
+            }
+        }
+
+        private void newAreaDialog_Canceled(object sender, EventArgs e)
+        {
+            try
+            {
+                CloseDialog();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("NewJobTitleDialog_Canceled: {0}", ex.Message);
+            }
+        }
+
+        private void ProfestionalAreaCombobox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            cb.ItemsSource = this.ProfessionalDbset.Local;
+            cb.SelectionChanged += ProfestionalAreaCombobox_SelectionChanged;
+        }
+
+        private void ProfestionalAreaCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb.Tag == null) return; 
+            string AreaKey = cb.Tag.ToString();
+            foreach (PracticingLicense item in LicenseDbset.Local)
+            {
+                if (item.Key == AreaKey)
+                {
+                    ProfesstionalArea area = (ProfesstionalArea)cb.SelectedItem;
+                    item.ProfessionalArea = area.Name;
+                    break;
+                } 
+            }
+        }
+
+        private void LicenseDeleteButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button Btn = sender as Button;
+            Console.WriteLine("Deleting Language Key: {0}", Btn.Tag.ToString());
+            DeleteLicenseRow(Btn.Tag.ToString());
+        }
+
+        private void DeleteLicenseRow(string v)
+        {
+            foreach (Data.PracticingLicense item in LicenseDbset.Local)
+            {
+                if (item.Key == v)
+                {
+                    LicenseDbset.Local.Remove(item);
+                    break;
+                }
+            }
+        }
+
+        private void PracticingAddNew_Clicked(object sender, RoutedEventArgs e)
+        {
+            CreateNewRow_Practicing();
+        }
+
+        private void CreateNewRow_Practicing()
+        {
+            var newLic = this.LicenseDbset.Create();
+            PracticingLicense C = (PracticingLicense)newLic;
+            C.Key = Encryption.GetUniqueKey(16);
+            C.StaffKey = this.StaffKey;
+            this.LicenseDbset.Local.Add(newLic);
+        }
+
+        private void LicenseStatusComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (!IsEditing)
+            {
+                cb.SelectedIndex = 0;
+            } else
+            {
+                if (cb.Tag == null) return;
+                string LicenseKey = cb.Tag.ToString();
+                foreach (Data.PracticingLicense lic in LicenseDbset.Local)
+                {
+                    if (lic.Key == LicenseKey)
+                    {
+                        foreach (ComboBoxItem item in cb.Items)
+                        {
+                            if (item.Content.ToString() == lic.Status)
+                            {
+                                item.IsSelected = true;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            cb.SelectionChanged += Cb_SelectionChanged;
+        }
+
+        private void Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb.Tag == null) return;
+            string LicenseKey = cb.Tag.ToString();
+            foreach (Data.PracticingLicense lic in LicenseDbset.Local)
+            {
+                if (lic.Key == LicenseKey)
+                {
+                    lic.Status = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+                    break;
+                }
+            }
+        }
+        #endregion
+
+        #region EXPERIENCES
+        private void ExpDeleteButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button Btn = sender as Button;
+            Console.WriteLine("Deleting Experience Key: {0}", Btn.Tag.ToString());
+            DeleteExpRow(Btn.Tag.ToString());
+        }
+
+        private void DeleteExpRow(string v)
+        {
+            foreach (Data.WorkingExperience item in ExpDbset.Local)
+            {
+                if (item.Key == v)
+                {
+                    ExpDbset.Local.Remove(item);
+                    break;
+                }
+            }
+        }
+
+        private void ExpAddNew_Clicked(object sender, RoutedEventArgs e)
+        {
+            CreateNewRow_Exp();
+        }
+
+        private void CreateNewRow_Exp()
+        {
+            var newExp = this.ExpDbset.Create();
+            WorkingExperience C = (WorkingExperience)newExp;
+            C.Key = Encryption.GetUniqueKey(16);
+            C.StaffKey = this.StaffKey;
+            this.ExpDbset.Local.Add(newExp);
+        }
+        #endregion
+
 
         /// <summary>
         /// Thêm nhân viên mới
@@ -271,11 +631,36 @@ namespace AvnConnect.Staffs
         /// <param name="e"></param>
         private void AddUserButtonClicked(object sender, RoutedEventArgs e)
         {
-            bool b = this.ValidatePersonalInformation();
             try
             {
-                Conn.ChangeTracker.DetectChanges();
-                Conn.SaveChanges();
+                var DateTimeNow = ExtendedFunctions.GetNetworkTime();
+                foreach (var item in Conn.ChangeTracker.Entries<Staff>())
+                {
+                    if (!this.IsEditing)
+                    {
+                        item.Entity.AddedOn = DateTimeNow;
+                        item.Entity.AddedBy = this.MainWindow.StaffKey != null ? this.MainWindow.StaffKey : item.Entity.Key;
+                        item.Entity.Password = Encryption.GetUniqueKey(8);
+                    };
+                    item.Entity.ModifiedBy = this.MainWindow.StaffKey != null ? this.MainWindow.StaffKey : item.Entity.Key;
+                    item.Entity.ModifiedOn = DateTimeNow;
+                }
+
+                bool _NoMoreError = true;
+
+                _NoMoreError = this.Validate();
+
+                if (_NoMoreError)
+                {
+                    int i = Conn.SaveChanges();
+                    if (i > 0)
+                    {
+                        this.StaffAdded?.Invoke(this, EventArgs.Empty);
+                    } else
+                    {
+                        MySnackbar.MessageQueue.Enqueue("Error while adding staff. Please try again later.");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -283,41 +668,26 @@ namespace AvnConnect.Staffs
             }
         }
 
-
-        /// <summary>
-        /// Kiểm tra các thông tin cá nhân đã nhập
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidatePersonalInformation()
+        private bool Validate()
         {
-            //Chưa nhập họ --> trả về false
-            if (MyStaff.Surname == null || MyStaff.Surname == "") return false;
+            bool result = true;
+            if (Conn.GetValidationErrors().Count() > 0)
+            {
+                this.MySnackbar.MessageQueue.Enqueue( "Please input all required information");
+                result = false;
+                foreach (var item in Conn.GetValidationErrors())
+                {
+                    foreach (var error in item.ValidationErrors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
 
-            //Chưa nhập tên --> trả về false
-            if (MyStaff.Firstname == null || MyStaff.Firstname == "") return false;
-
-            //Chưa nhập email --> trả về false
-            if (MyStaff.EmailAddress == null || MyStaff.EmailAddress == "") return false;
-
-            //Nếu email không phù hợp --> trả về false
-            AvnConnect.RegexUtilities Regex = new AvnConnect.RegexUtilities();
-            if (!Regex.IsValidEmail(MyStaff.EmailAddress)) return false;
-
-            //Nếu chưa chọn chức vụ --> trả về false
-            if (MyStaff.JobTitle == null || MyStaff.JobTitle == "") return false;
-
-            //Nếu chưa chọn phòng ban --> trả về false
-            if (MyStaff.Department == null || MyStaff.Department == "") return false;
-
-            //Thông tin về tình trạng hôn nhân
-            this.MyStaff.MaritalStatus = this.MaritalCombobox.SelectedValue.ToString();
-
-            //Thông tin về quốc tịch
-            this.MyStaff.Nationality = "Vietnamese";
-
-            //Nếu đã nhập hết thì ok
-            return true;
+            }
+            return result;
         }
+
+
 
         #region ADD JOB TITLE
 
@@ -355,8 +725,6 @@ namespace AvnConnect.Staffs
                     };
 
                     this.JobTitleDataSet.Add(newJobtitle);
-
-                    //Chọn chức vụ mới được thêm vào
                     if (JobTitleCombobox.Items.Count > 0) this.JobTitleCombobox.SelectedIndex = JobTitleCombobox.Items.Count - 1;
                 }
             }
@@ -421,7 +789,6 @@ namespace AvnConnect.Staffs
                     };
 
                     this.DepartmentDataSet.Add(newDepartment);
-
                     if (this.DepartmentCombobox.Items.Count > 0) this.DepartmentCombobox.SelectedIndex = this.DepartmentCombobox.Items.Count - 1;
                 }
             }
@@ -450,6 +817,11 @@ namespace AvnConnect.Staffs
         }
         #endregion
 
+
+
+
+
+
         /// <summary>
         /// Close any dialog hosted by this.DialogHost
         /// </summary>
@@ -460,6 +832,6 @@ namespace AvnConnect.Staffs
             this.DialogHost.Visibility = Visibility.Collapsed;
         }
 
-      
+    
     }
 }
