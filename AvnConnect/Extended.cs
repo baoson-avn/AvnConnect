@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using AvnConnect.Data;
+using System.Windows.Shapes;
 
 namespace AvnConnect
 {
@@ -78,6 +81,8 @@ namespace AvnConnect
                            ((x & 0x00ff0000) >> 8) +
                            ((x & 0xff000000) >> 24));
         }
+
+     
     }
 
     public class MyTextBlock: TextBlock
@@ -122,5 +127,172 @@ namespace AvnConnect
         {
             this.TextDecorations.Add(System.Windows.TextDecorations.Underline[0]);
         }
+    }
+
+    public class TagChips: MaterialDesignThemes.Wpf.Chip
+    {
+        
+        public TagChips()
+        {
+            this.IsDeletable = true;
+        }
+
+        public void SetTags(Data.Tags Tag)
+        {
+            this.Icon = new MaterialDesignThemes.Wpf.PackIcon()
+            {
+                Kind = MaterialDesignThemes.Wpf.PackIconKind.Tag
+            };
+           
+            var color = ColorFunctions.FromHexString(Tag.Color);
+            if (color != null)
+            {
+                if (color.Value.R + color.Value.G + color.Value.B < 382)
+                {
+                    this.IconForeground = new SolidColorBrush(Colors.White);
+                }
+                else
+                {
+                    this.IconForeground = new SolidColorBrush(Colors.Black);
+                }
+                this.IconBackground = new SolidColorBrush(color.Value);
+                this.BorderBrush = this.IconBackground;
+            } else
+            {
+                this.IconBackground = new SolidColorBrush(Colors.LightGray);
+            }
+            this.Content = Tag.TagName;
+        }
+    }
+
+    public class MyTagChips : UserControl, INotifyPropertyChanged
+    {
+
+        public event EventHandler Deleting;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public MyTagChips()
+        {
+            this.PropertyChanged += MyTagChips_PropertyChanged;
+        }
+
+        private void MyTagChips_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsDeletable")
+            {
+                if (this._IsDeletable)
+                {
+                    this.DeleteButton.Visibility = Visibility.Visible;
+                } else
+                {
+                    this.DeleteButton.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        public MyTagChips(Data.Tags tag)
+        {
+            this.PropertyChanged += MyTagChips_PropertyChanged;
+            this.Height = 24;
+            this.MyTag = tag;
+            this.CreateComponents();
+        }
+
+        public Tags MyTag { get; private set; }
+
+        bool _IsDeletable = true;
+        private Button DeleteButton;
+
+        public bool IsDeletable
+        {
+            get { return _IsDeletable; }
+            set
+            {
+                this._IsDeletable = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsDeletable"));
+            }
+        }
+
+
+        private void CreateComponents()
+        {
+            //The border
+            Border TextBorder = new Border();
+            var BgColor = ColorFunctions.FromHexString(MyTag.Color);
+            if (!BgColor.HasValue)
+            {
+                BgColor = Colors.DarkGray;
+            } 
+            TextBorder.Background = new SolidColorBrush(BgColor.Value);
+            TextBorder.CornerRadius = new CornerRadius(3);
+            TextBorder.BorderThickness = new Thickness(1);
+            TextBorder.BorderBrush = new SolidColorBrush(ColorFunctions.ChangeColorBrightness(BgColor.Value, -0.3f));
+            TextBorder.Padding = new Thickness(5, 2, 5, 2);
+
+            //Stackpanel to host textblock and delete butotn
+            StackPanel MainStack = new StackPanel();
+            MainStack.Orientation = Orientation.Horizontal;
+            TextBorder.Child = MainStack; 
+
+            //Textblock that show tag name
+            TextBlock Tex = new TextBlock()
+                {
+                    Text = MyTag.TagName ,
+                    Margin = new Thickness (3, 0, 3, 0),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    MaxWidth = 200,
+                    TextTrimming = TextTrimming.CharacterEllipsis
+                };
+
+            Color background = ((SolidColorBrush)TextBorder.Background).Color;
+
+            if (ColorFunctions.GetBrightness(background) > 0.5)
+            {
+                Tex.Foreground = new SolidColorBrush(Colors.Black);
+            } else
+            {
+                Tex.Foreground = new SolidColorBrush(Colors.White);
+            }
+
+            //Delete button
+            this. DeleteButton = new Button();
+            DeleteButton.Style = (Style) this.FindResource("MaterialDesignFlatButton");
+            DeleteButton.Content = new MaterialDesignThemes.Wpf.PackIcon() { Kind = MaterialDesignThemes.Wpf.PackIconKind.TagRemove };
+            DeleteButton.Height = 20;
+            DeleteButton.Foreground = TextBorder.BorderBrush;
+            DeleteButton.Margin = new Thickness(2, 0, 0, 0);
+            DeleteButton.Width = 20;
+            DeleteButton.Padding = new Thickness(0);
+            DeleteButton.Click += Delete_Click;
+            DeleteButton.ToolTip = "Delete this tag";
+
+            //Add controls to hosting panel
+            MainStack.Children.Add(Tex);
+            MainStack.Children.Add(DeleteButton);
+            this.Content = TextBorder;
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            Deleting?.Invoke(this, EventArgs.Empty);
+        }
+
+        private SolidColorBrush GetBackground(string TagColor)
+        {
+            var color = ColorFunctions.FromHexString(TagColor);
+            if (color != null)
+            {
+                return new SolidColorBrush(color.Value);
+            }
+            else
+            {
+                return new SolidColorBrush(Colors.Gray  );
+            }
+        }
+    }
+
+    public class TwoTagsChip: MaterialDesignThemes.Wpf.Chip
+    {
+        public object Tag2 { get; set; }
     }
 }

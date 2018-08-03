@@ -39,5 +39,8 @@ namespace AvnConnect.Data
         public virtual DbSet<ProjectStaffs> ProjectStaffs { get; set; }
         public virtual DbSet<UserProjectPermission> UserProjectPermissions { get; set; }
         public virtual DbSet<ProjectActivity> ProjectActivities { get; set; }
+        public virtual DbSet<Tags> Tags { get; set; }
+        public virtual DbSet<ProjectTaskList> ProjectTaskLists { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
     }
 }

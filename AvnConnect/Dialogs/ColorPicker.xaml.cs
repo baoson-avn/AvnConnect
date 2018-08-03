@@ -27,7 +27,7 @@ namespace AvnConnect.Dialogs
             {
                 cb.Selected += Cb_Selected;
             }
-            this.CurrentSelectedColor = new SolidColorBrush(Colors.DimGray);
+            this.CurrentSelectedColor = new SolidColorBrush(Colors.White);
         }
 
         public SolidColorBrush CurrentSelectedColor { get; private set; }

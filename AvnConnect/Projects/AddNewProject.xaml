@@ -1,0 +1,376 @@
+﻿<UserControl x:Class="AvnConnect.Projects.AddNewProject"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converter="clr-namespace:AvnConnect.Converter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AvnConnect.Projects"
+             xmlns:dialog="clr-namespace:AvnConnect.Dialogs"
+             xmlns:data="clr-namespace:AvnConnect.Data"
+             xmlns:app="clr-namespace:AvnConnect"
+             Background="White"
+             mc:Ignorable="d"
+             Width="600"
+             d:DataContext="{x:Type local:AddNewProject}">
+    <UserControl.Resources>
+        <converter:SelectedToBackgroundBrush x:Key="SelectedToBackgroundBrush"></converter:SelectedToBackgroundBrush>
+        <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converter:CategoryLevelToFontStyle x:Key="CategoryLevelToFontStyle"></converter:CategoryLevelToFontStyle>
+        <converter:GetFirstCharacter x:Key="GetFirstCharacter"/>
+        <converter:EmptyStringToEnableConverter x:Key="EmptyStringToEnableConverter"></converter:EmptyStringToEnableConverter>
+        <converter:EmptyStringToVisibilityConverter x:Key="EmptyStringToEnableConverter2"></converter:EmptyStringToVisibilityConverter>
+
+        <converter:GetAvatarConverter x:Key="GetAvatarConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Thanh tiêu đề-->
+        <DockPanel Background="{DynamicResource PrimaryHueDarkBrush}">
+            <Border Padding="6" DockPanel.Dock="Right" Margin="20, 10" Background="Transparent" ToolTip="Close" MouseLeftButtonUp="CloseButton_Click" VerticalAlignment="Center" Cursor="Hand">
+                <material:PackIcon Kind="CloseBox" Foreground="White"></material:PackIcon>
+            </Border>
+            <TextBlock Margin="20, 10" Text="{Binding Header}"
+                       Foreground="White" Style="{DynamicResource MaterialDesignDisplay1TextBlock}"></TextBlock>
+        </DockPanel>
+
+        <DockPanel Grid.Row="2" Margin="20,10" LastChildFill="False">
+            <TextBlock Text="What's the Project Name?" DockPanel.Dock="Top"
+                       FontWeight="SemiBold"
+                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" DockPanel.Dock="Top"
+                       Foreground="Gray"
+                       Text="Don't sweat it, you can change this later. e.g. 'AVN FS2018 Audit' or 'Avn Marketing'."></TextBlock>
+            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" DockPanel.Dock="Top"
+                       Foreground="Gray"
+                       Text="Remember it could also be a work space for ongoing work like 'Management' or 'Accounts'. "></TextBlock>
+            <TextBox Margin="0,5,0,15" material:HintAssist.Hint="World Domination Master Plan" DockPanel.Dock="Top"
+                     Text="{Binding NewProject.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                   
+                     FontSize="15" x:Name="NewProjectNameTextbox"></TextBox>
+
+            <Border BorderBrush="Gray" BorderThickness="0, 0, 0, 0" DockPanel.Dock="Top">
+                <StackPanel Orientation="Horizontal">
+                    <ListBox Visibility="Collapsed" x:Name="ItemListBox">
+                        <ListBoxItem x:Name="DescriptionItem" IsSelected="True">
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="CustomerItem"  >
+                        </ListBoxItem>
+                        <ListBoxItem   x:Name="PeopleItem" >
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="DatesItem" >
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="AdvancedItem" >
+                        </ListBoxItem>
+                    </ListBox>
+                    <Button Content="Description" 
+                            Padding="7, 3"
+                            Tag="DescriptionItem" Click="HeaderButtonClicked" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3, 0" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=DescriptionItem}"></Button>
+                    <Button Content="Customer" 
+                            Padding="7, 3"
+                            Click="HeaderButtonClicked" Tag="CustomerItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=CustomerItem}"></Button>
+                    <Button Content="People" 
+                            Padding="7, 3"
+                            Click="HeaderButtonClicked" Tag="PeopleItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=PeopleItem}"></Button>
+                    <Button Content="Dates" 
+                            Padding="7, 3"
+                            Click="HeaderButtonClicked" Tag="DatesItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=DatesItem}"></Button>
+                    <Button Content="Advance" 
+                            Padding="7, 3"
+                            Click="HeaderButtonClicked" Tag="AdvancedItem" Style="{DynamicResource MaterialDesignFlatButton}" Margin="3" Background="{Binding IsSelected, Converter={StaticResource SelectedToBackgroundBrush}, ElementName=AdvancedItem}"></Button>
+                </StackPanel>
+            </Border>
+
+            <!--Buttons-->
+            <DockPanel DockPanel.Dock="Bottom" Margin="10" LastChildFill="False">
+                <Button Content="Close" Click="CloseButton_Click" DockPanel.Dock="Left"
+                        BorderBrush="LightGray" BorderThickness="1"
+                        Style="{DynamicResource MaterialDesignFlatButton}"></Button>
+                <Button Content="Add Project" Click="AddButton_Click" DockPanel.Dock="Right"
+                        IsEnabled="{Binding ElementName=NewProjectNameTextbox, Path=Text, Converter={StaticResource EmptyStringToEnableConverter}}"
+                        Style="{DynamicResource MaterialDesignRaisedButton}"></Button>
+            </DockPanel>
+
+            <!--Description-->
+            <DockPanel DockPanel.Dock="Top" Margin="10" Visibility="{Binding ElementName=DescriptionItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Provide a description" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                    <TextBlock Text="(Optional)" Margin="10, 0" VerticalAlignment="Center" Foreground="Gray"></TextBlock>
+                </StackPanel>
+                <TextBox AcceptsReturn="True"
+                         Text="{Binding NewProject.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         MinHeight="80"
+                         MaxHeight="120"
+                         VerticalContentAlignment="Top"
+                         BorderBrush="LightGray"
+                         BorderThickness="1"
+                         TextWrapping="Wrap" Margin="0, 10, 0, 0"></TextBox>
+            </DockPanel>
+
+            
+            <!--TO DO: ALLOW USER TO SELECT CUSTOMER-->
+            <!--Customer-->
+            <DockPanel DockPanel.Dock="Top" Margin="10" 
+                       LastChildFill="False"
+                       Visibility="{Binding ElementName=CustomerItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Is this a project for a customer?" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                </StackPanel>
+                <ComboBox DockPanel.Dock="Top" Margin="0, 5" HorizontalAlignment="Left">
+                    <ComboBoxItem IsSelected="True" Content="No, this project is for our company (avn)"></ComboBoxItem>
+                    <ComboBoxItem Content="Yes, this project is for a customer..."
+                                  x:Name="ForCustomerComboboxItem"></ComboBoxItem>
+                </ComboBox>
+                <TextBlock Margin="0, 5, 0, 0" 
+                           DockPanel.Dock="Top"
+                           Visibility="{Binding ElementName=ForCustomerComboboxItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Text="Select an existing customer..." Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                <ComboBox DockPanel.Dock="Top" Margin="0, 5" 
+                          Visibility="{Binding ElementName=ForCustomerComboboxItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          HorizontalAlignment="Left"></ComboBox>
+                <TextBlock Margin="0, 5, 0, 0" 
+                           Visibility="{Binding ElementName=ForCustomerComboboxItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           DockPanel.Dock="Top"
+                           Text="... or enter the name of the new customer" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                <TextBox Margin="0, 5" 
+                         Visibility="{Binding ElementName=ForCustomerComboboxItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         material:HintAssist.Hint="Customer's name" DockPanel.Dock="Bottom"></TextBox>
+            </DockPanel>
+
+            
+            
+            <!--People-->
+            <Grid DockPanel.Dock="Top" Margin="10" 
+                  Visibility="{Binding ElementName=PeopleItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Who should be added to this project?" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                <WrapPanel Margin="0, 5" Grid.Row="1"
+                           x:Name="SelectedStaffsWrapPanel">
+                </WrapPanel>
+
+                <TextBox material:HintAssist.Hint="Search existing user" 
+                         BorderBrush="LightGray"    BorderThickness="1"
+                         Grid.Row="2" Margin="0, 5"></TextBox>
+                
+                <ListBox Grid.Row="3" x:Name="UserListbox" 
+                         BorderBrush="LightGray" BorderThickness="1"
+                         MaxHeight="160 ">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type data:Staff}">
+                            <Border x:Name="Border" Padding="6, 3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton 
+                                        Initialized="StaffToggleButton_Initialized"
+                                        Checked="StaffSelected"
+                                        ToggleButton.Unchecked="Staff_Unselected"
+                                        Tag="{Binding Key}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignActionLightToggleButton}">
+                                        <ToggleButton.Content>
+                                            <MultiBinding Converter="{StaticResource GetAvatarConverter}">
+                                                <Binding Path="Firstname"></Binding>
+                                                <Binding Path="Avatar"></Binding>
+                                            </MultiBinding>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+
+                                    <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Surname}" />
+                                            <TextBlock FontWeight="Bold" Text=" " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Firstname}" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Department}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Margin="0, 5" Orientation="Horizontal" Grid.Row="4">
+                    <TextBlock Text="Project Owner: " VerticalAlignment="Center"></TextBlock>
+                    <ComboBox MinWidth="100" 
+                              x:Name="ProjectOwner_Combobox">
+                        <ComboBox.ItemTemplate >
+                            <DataTemplate DataType="{x:Type data:Staff}">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="{Binding Surname}" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding Firstname}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+
+            <!--Dates-->
+            <DockPanel DockPanel.Dock="Top" Margin="10" Visibility="{Binding ElementName=DatesItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Project Dates" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                    <TextBlock Text="(Optional)" Margin="10, 0" VerticalAlignment="Center" Foreground="Gray"></TextBlock>
+                </StackPanel>
+                <TextBlock TextWrapping="Wrap"
+                           DockPanel.Dock="Top"
+                           Foreground="Gray"
+                           Margin="0, 3"
+                           Text="Adding a start and end date provides your team a useful way to see the duration of this project which helps with planning your tasks."></TextBlock>
+
+                <Grid DockPanel.Dock="Top" Margin="0, 3, 0, 3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <dialog:MyDatePicker x:Name="StartDatePicker"
+                                         SelectedDate="{Binding NewProject.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Header="Start Date" HorizontalAlignment="Left"></dialog:MyDatePicker>
+                    <dialog:MyDatePicker x:Name="EndDatePicker" 
+                                         SelectedDate="{Binding NewProject.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Header="End Date" HorizontalAlignment="Left"></dialog:MyDatePicker>
+
+                </Grid>
+
+            </DockPanel>
+
+            <!--Advance-->
+            <DockPanel DockPanel.Dock="Top" Margin="10" Visibility="{Binding ElementName=AdvancedItem, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Project Category" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                    <TextBlock Text="(Optional)" Margin="10, 0" VerticalAlignment="Center" Foreground="Gray"></TextBlock>
+                </StackPanel>
+                <TextBlock TextWrapping="Wrap"
+                           DockPanel.Dock="Top"
+                           Foreground="Gray"
+                           Margin="0, 3"
+                           Text="Adding a category provides your team a useful way to group related projects together."></TextBlock>
+
+                <!--Choose category-->
+                <StackPanel Orientation="Horizontal" 
+                            DockPanel.Dock="Top"
+                            Margin="0, 3">
+                    <material:PopupBox Margin="0,0,0,0" 
+                                       PlacementMode="RightAndAlignBottomEdges"
+                                       StaysOpen="True">
+                        <material:PopupBox.ToggleContent>
+                            <Border Padding="16, 6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="2">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Choose Category"></TextBlock>
+                                    <material:PackIcon VerticalAlignment="Center" Margin="3, 0, 0, 0" Kind="Folder" Foreground="DimGray"></material:PackIcon>
+                                </StackPanel>
+                            </Border>
+                        </material:PopupBox.ToggleContent>
+
+                        <Grid MaxHeight="250">
+                            <TreeView x:Name="ProjectCategoryTree" Margin="10, 5">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate DataType="{x:Type local:CategoryItem}" 
+                                          ItemsSource="{Binding SubCategories}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <material:PackIcon Kind="Folder"
+                                                               Foreground="{Binding Category.Color}"
+                                                               VerticalAlignment="Center" Margin="0, 0, 5, 0"></material:PackIcon>
+                                            <TextBlock Text="{Binding Category.Name}" Style="{Binding Category.Level, Converter={StaticResource CategoryLevelToFontStyle}}"/>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </Grid>
+
+                    </material:PopupBox>
+                </StackPanel>
+
+                <!--Adding tags-->
+                <StackPanel Orientation="Horizontal" Margin="0, 15, 0, 0" DockPanel.Dock="Top">
+                    <TextBlock Text="Tags" Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                    <TextBlock Text="(Optional)" Margin="10, 0" VerticalAlignment="Center" Foreground="Gray"></TextBlock>
+                </StackPanel>
+                <TextBlock TextWrapping="Wrap"
+                           DockPanel.Dock="Top"
+                           Foreground="Gray"
+                           Margin="0, 3"
+                           Text="Tags can be used to set custom statuses on your projects"></TextBlock>
+
+                <WrapPanel DockPanel.Dock="Top" Margin="0, 3" x:Name="TagWrapPanel">
+                    <material:PopupBox Margin="0,0,0,0" 
+                                   Opened="AddTagPopupButton_Opened"
+                                   x:Name="AddTagPopupButton"
+                                   DockPanel.Dock="Top"
+                                   PlacementMode="RightAndAlignMiddles"
+                                   StaysOpen="True">
+                        <material:PopupBox.ToggleContent>
+                            <Border Padding="16, 6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="2">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Add Tag"></TextBlock>
+                                    <material:PackIcon VerticalAlignment="Center" Margin="3, 0, 0, 0" Kind="Tag" Foreground="DimGray"></material:PackIcon>
+                                </StackPanel>
+                            </Border>
+                        </material:PopupBox.ToggleContent>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <DockPanel>
+                                <material:PackIcon DockPanel.Dock="Left" Kind="Tag" VerticalAlignment="Center" Margin="3" Foreground="DimGray"></material:PackIcon>
+                                <TextBox DockPanel.Dock="Left" material:HintAssist.Hint="Tag name"
+                                        x:Name="NewTagTextBox" 
+                                         TextChanged="NewTagTextBox_TextChanged"
+                                        VerticalAlignment="Center" Margin="0, 3, 3, 3"></TextBox>
+                            </DockPanel>
+
+                            <ListBox Grid.Row="1" 
+                                     x:Name="RecentTagListBox"
+                                 Visibility="Collapsed">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type data:Tags}">
+                                        <material:Chip IconBackground="{Binding Color}"
+                                                   Content="{Binding TagName}"></material:Chip>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <StackPanel Grid.Row="1">
+                                <dialog:ColorPicker x:Name="TagColorPicker" ></dialog:ColorPicker>
+                                <Button Content="Add Tag" 
+                                        IsEnabled="False"
+                                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                                        Click="AddTagButton_Clicked"
+                                        x:Name="AddTagButton"></Button>
+                            </StackPanel>
+                        </Grid>
+                    </material:PopupBox>
+                </WrapPanel>
+            </DockPanel>
+        </DockPanel>
+
+        <material:Snackbar
+            x:Name="MySnackbar"
+            HorizontalAlignment="Stretch" Grid.Row="3" MessageQueue="{material:MessageQueue}">
+            
+        </material:Snackbar>
+    </Grid>
+</UserControl>

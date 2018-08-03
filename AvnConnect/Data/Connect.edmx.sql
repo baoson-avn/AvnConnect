@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/05/2018 14:17:35
+-- Date Created: 07/22/2018 09:23:40
 -- Generated from EDMX file: D:\Documents\Visual Studio 2015\Projects\AvnConnect\AvnConnect\Data\Connect.edmx
 -- --------------------------------------------------
 
@@ -63,6 +63,12 @@ IF OBJECT_ID(N'[dbo].[UserProjectPermissions]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[ProjectActivities]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ProjectActivities];
+GO
+IF OBJECT_ID(N'[dbo].[Tags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Tags];
+GO
+IF OBJECT_ID(N'[dbo].[ProjectTaskLists]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProjectTaskLists];
 GO
 
 -- --------------------------------------------------
@@ -293,6 +299,31 @@ CREATE TABLE [dbo].[ProjectActivities] (
 );
 GO
 
+-- Creating table 'Tags'
+CREATE TABLE [dbo].[Tags] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [TagKey] nvarchar(max)  NOT NULL,
+    [TagName] nvarchar(max)  NOT NULL,
+    [Color] nvarchar(max)  NOT NULL,
+    [AddedBy] nvarchar(max)  NOT NULL,
+    [AddOn] datetime  NOT NULL
+);
+GO
+
+-- Creating table 'ProjectTaskLists'
+CREATE TABLE [dbo].[ProjectTaskLists] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ListName] nvarchar(max)  NOT NULL,
+    [CreatedBy] nvarchar(max)  NOT NULL,
+    [CreatedOn] datetime  NOT NULL,
+    [Description] nvarchar(max)  NULL,
+    [ModifiedBy] nvarchar(max)  NULL,
+    [ModifiedOn] datetime  NULL,
+    [Key] nvarchar(max)  NOT NULL,
+    [ProjectKey] nvarchar(max)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -378,6 +409,18 @@ GO
 -- Creating primary key on [Id] in table 'ProjectActivities'
 ALTER TABLE [dbo].[ProjectActivities]
 ADD CONSTRAINT [PK_ProjectActivities]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Tags'
+ALTER TABLE [dbo].[Tags]
+ADD CONSTRAINT [PK_Tags]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ProjectTaskLists'
+ALTER TABLE [dbo].[ProjectTaskLists]
+ADD CONSTRAINT [PK_ProjectTaskLists]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

@@ -20,6 +20,8 @@
     <EntitySet Name="ProjectStaffs" EntityType="Connect.Store.ProjectStaffs" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserProjectPermissions" EntityType="Connect.Store.UserProjectPermissions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ProjectActivities" EntityType="Connect.Store.ProjectActivities" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tags" EntityType="Connect.Store.Tags" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProjectTaskLists" EntityType="Connect.Store.ProjectTaskLists" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="Staffs">
     <Key>
@@ -245,6 +247,31 @@
     <Property Name="HappenedOn" Type="datetime" Nullable="false" />
     <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="Tags">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TagKey" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TagName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Color" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AddOn" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectTaskLists">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ListName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ModifiedBy" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ModifiedOn" Type="datetime" Nullable="true" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProjectKey" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -264,6 +291,9 @@
           <EntitySet Name="ProjectStaffs" EntityType="Connect.ProjectStaffs" />
           <EntitySet Name="UserProjectPermissions" EntityType="Connect.UserProjectPermission" />
           <EntitySet Name="ProjectActivities" EntityType="Connect.ProjectActivity" />
+          <EntitySet Name="Tags" EntityType="Connect.Tags" />
+          <EntitySet Name="ProjectTaskLists" EntityType="Connect.ProjectTaskList" />
+          <EntitySet Name="Tasks" EntityType="Connect.Task" />
         </EntityContainer>
         <EntityType Name="Staff">
           <Key>
@@ -488,6 +518,44 @@
           <Property Name="ByStaff" Type="String" Nullable="false" />
           <Property Name="HappenedOn" Type="DateTime" Nullable="false" />
           <Property Name="Message" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagKey" Type="String" Nullable="false" />
+          <Property Name="TagName" Type="String" Nullable="false" />
+          <Property Name="Color" Type="String" Nullable="false" />
+          <Property Name="AddedBy" Type="String" Nullable="false" />
+          <Property Name="AddOn" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectTaskList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ListName" Type="String" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="true" />
+          <Property Name="ModifiedBy" Type="String" Nullable="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="true" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="ProjectKey" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" />
+          <Property Name="StartDate" Type="String" Nullable="false" />
+          <Property Name="DueDate" Type="String" Nullable="false" />
+          <Property Name="Priority" Type="String" Nullable="false" />
+          <Property Name="Progress" Type="String" Nullable="false" />
+          <Property Name="ETA" Type="String" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -730,6 +798,33 @@
           <ScalarProperty Name="ByStaff" ColumnName="ByStaff" />
           <ScalarProperty Name="HappenedOn" ColumnName="HappenedOn" />
           <ScalarProperty Name="Message" ColumnName="Message" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tags">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.Tags)">
+        <MappingFragment StoreEntitySet="Tags">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TagKey" ColumnName="TagKey" />
+          <ScalarProperty Name="TagName" ColumnName="TagName" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+          <ScalarProperty Name="AddOn" ColumnName="AddOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectTaskLists">
+      <EntityTypeMapping TypeName="IsTypeOf(Connect.ProjectTaskList)">
+        <MappingFragment StoreEntitySet="ProjectTaskLists">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ListName" ColumnName="ListName" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

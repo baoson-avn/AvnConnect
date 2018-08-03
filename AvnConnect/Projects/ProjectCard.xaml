@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="AvnConnect.Projects.ProjectCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AvnConnect.Projects"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:app="clr-namespace:AvnConnect"
+             xmlns:converter="clr-namespace:AvnConnect.Converter"
+             mc:Ignorable="d" 
+             Margin="5"
+             Background="Transparent"
+             d:DataContext="{x:Type local:ProjectCard}"
+             Height="240"
+             Width="200">
+    <UserControl.Resources>
+        <converter:ProjectDateToText x:Key="ProjectDateToText"/>
+    </UserControl.Resources>
+    <material:Card HorizontalAlignment="Stretch" Background="White" VerticalAlignment="Stretch">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel>
+                <app:MyTextBlock Text="{Binding MyProject.Name}"
+                                 DockPanel.Dock="Top"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 MaxHeight="100" TextTrimming="CharacterEllipsis"
+                                 TextWrapping="Wrap"
+                                 Click="ProjectTitleClicked"
+                                 material:ShadowAssist.ShadowDepth="Depth1"
+                                 material:ShadowAssist.Darken="True"
+                                 FontWeight="SemiBold"
+                                 Style="{DynamicResource MaterialDesignSubheadingTextBlock}"></app:MyTextBlock>
+
+                <TextBlock Margin="0, 5" 
+                           DockPanel.Dock="Top"
+                           x:Name="CompanyTextBox" Text="AVN" Foreground="Gray"></TextBlock>
+                <WrapPanel x:Name="ListOfTagsPanel"
+                           DockPanel.Dock="Top"></WrapPanel>
+                <Grid Margin="0, 5" DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <material:PackIcon Kind="Calendar" Foreground="DimGray" Margin="0, 0, 5, 0"></material:PackIcon>
+                    <TextBlock TextWrapping="Wrap" Grid.Column="1">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource ProjectDateToText}">
+                                <Binding Path="MyProject.StartDate"></Binding>
+                                <Binding Path="MyProject.EndDate"></Binding>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
+                
+                <Grid Margin="0, 5" DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <material:PackIcon Kind="Information" 
+                                       x:Name="DescriptionIcon"
+                                       Foreground="DimGray" Margin="0, 0, 5, 0"></material:PackIcon>
+                    <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBlock 
+                        Text="{Binding MyProject.Description}" 
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap">
+                        </TextBlock>
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </material:Card>
+</UserControl>

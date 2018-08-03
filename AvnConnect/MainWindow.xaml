@@ -55,6 +55,10 @@
     </metro:MetroWindow.RightWindowCommands>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/Catalina, California 1920x1080.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -73,9 +77,9 @@
 
         <!--Thanh điều hướng-->
         <DockPanel Grid.Row="0" TextBlock.Foreground="White" Height="Auto">
-            <DockPanel.Background>
-                <SolidColorBrush Color="#334863"></SolidColorBrush>
-            </DockPanel.Background>
+            <!--<DockPanel.Background>
+                <ImageBrush ImageSource="Images/3203.jpg" Stretch="UniformToFill"/>
+            </DockPanel.Background>-->
             <TextBlock Margin="20, 10" Text="AVN Connect" Style="{DynamicResource MaterialDesignDisplay2TextBlock}"></TextBlock>
 
         </DockPanel>

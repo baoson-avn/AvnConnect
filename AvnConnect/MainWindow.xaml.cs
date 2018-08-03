@@ -31,16 +31,27 @@ namespace AvnConnect
         public Staff LoggedInStaff { get; private set; }
         public Permission Permission { get; private set; }
 
+
+
+
+        private bool debug = false;
+
         public MainWindow()
         {
             InitializeComponent();
             this.DataConn = new Data.ConnectContainer();
 
-            this.DataConn.Staffs.FirstOrDefault().Password = "12345678";
-            this.DataConn.SaveChanges();
+            if (debug)
+            {
+                this.WindowsCommandCollection.IsHitTestVisible = true;
+                this.BlockingBackground.Visibility = Visibility.Collapsed;
 
-            //this.WindowsCommandCollection.IsHitTestVisible = true;
-            //this.BlockingBackground.Visibility = Visibility.Collapsed;
+                if (this.DataConn.Staffs.Count() > 0)
+                {
+                    this.DataConn.Staffs.FirstOrDefault().Password = "12345678";
+                    this.DataConn.SaveChanges();
+                }
+            }
 
             this.Loaded += MainWindow_Loaded;
         }
@@ -59,20 +70,27 @@ namespace AvnConnect
             GetTimeWorker.RunWorkerAsync();
 
             //Show the login dialog
-            Login.Login Lg = new Login.Login();
-            Lg.LoginCompleted += Lg_LoginCompleted;
-            this.ShowDialog(Lg);
-
-
+            if (!debug)
+            {
+                Login.Login Lg = new Login.Login();
+                Lg.LoginCompleted += Lg_LoginCompleted;
+                this.ShowCustomDialog(Lg); 
+            }
         }
 
-        public void ShowDialog(object Content)
+        public void ShowCustomDialog(object Content)
         {
             this.DialogHost.DialogContent = Content;
             this.DialogHost.Visibility = Visibility.Visible;
             this.DialogHost.IsOpen = true;
         }
 
+        public void CloseCustomDialog()
+        {
+            this.DialogHost.DialogContent = null;
+            this.DialogHost.Visibility = Visibility.Collapsed;
+            this.DialogHost.IsOpen = false;
+        }
 
         private void Lg_LoginCompleted(object sender, EventArgs e)
         {
@@ -107,6 +125,7 @@ namespace AvnConnect
 
             //Create the view
             this.ProjectViewer.LoadTreeView();
+            this.ProjectViewer.LoadProjects();
         }
 
         private void GetTimeWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace AvnConnect
 {
@@ -61,6 +62,86 @@ namespace AvnConnect
                 invalid = true;
             }
             return match.Groups[1].Value + domainName;
+        }
+    }
+
+    public static class ColorFunctions
+    {
+        public static Nullable<Color> FromHexString(string hexCode)
+        {
+            try
+            {
+                string hex = hexCode;
+                if (hex.StartsWith("#")) hex = hex.Substring(1);
+                byte a;
+                byte r;
+                byte g;
+                byte b;
+                if (hex.Length == 6)
+                {
+                    a = 255;
+                    r = byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier);
+                    g = byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier);
+                    b = byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier);
+                    return Color.FromArgb(a, r, g, b);
+                }
+                if (hex.Length == 8)
+                {
+                    a = byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier);
+                    r = byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier);
+                    g = byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier);
+                    b = byte.Parse(hex.Substring(6, 2), NumberStyles.AllowHexSpecifier);
+                    return Color.FromArgb(a, r, g, b);
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;   
+            }
+        }
+
+        //Get brightness
+        public static float GetBrightness(Color color)
+        {
+            float num = ((float)color.R) / 255f;
+            float num2 = ((float)color.G) / 255f;
+            float num3 = ((float)color.B) / 255f;
+            float num4 = num;
+            float num5 = num;
+            if (num2 > num4)
+                num4 = num2;
+            if (num3 > num4)
+                num4 = num3;
+            if (num2 < num5)
+                num5 = num2;
+            if (num3 < num5)
+                num5 = num3;
+            return ((num4 + num5) / 2f);
+        }
+
+        //Change color bright ness
+        //correctionFactor from -1 to 1
+        public static Color ChangeColorBrightness(Color color, float correctionFactor)
+        {
+            float red = (float)color.R;
+            float green = (float)color.G;
+            float blue = (float)color.B;
+
+            if (correctionFactor < 0)
+            {
+                correctionFactor = 1 + correctionFactor;
+                red *= correctionFactor;
+                green *= correctionFactor;
+                blue *= correctionFactor;
+            }
+            else
+            {
+                red = (255 - red) * correctionFactor + red;
+                green = (255 - green) * correctionFactor + green;
+                blue = (255 - blue) * correctionFactor + blue;
+            }
+            return Color.FromArgb(color.A, (byte)red, (byte)green, (byte)blue);
         }
     }
 }

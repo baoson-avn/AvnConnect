@@ -57,7 +57,8 @@ namespace AvnConnect.Dialogs
 
         public enum DialogTypes
         {
-            YesNo
+            YesNo,
+            OK
         }
 
         public enum DialogResults
@@ -87,10 +88,34 @@ namespace AvnConnect.Dialogs
                 case DialogTypes.YesNo:
                     this.CreateYesNoContent();
                     break;
+                case DialogTypes.OK:
+                    this.CreateOKContent();
+                    break;
                 default:
                     break;
             }
         }
+
+        private void CreateOKContent()
+        {
+            var PrimaryButtonStyle = this.TryFindResource("MaterialDesignRaisedButton");
+            Button OK = new Button()
+            {
+                Content = "OK",
+                Margin = new Thickness(10, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+            DockPanel.SetDock(OK, Dock.Top);
+            this.ButtonDockPanel.Children.Add(OK);
+            if (PrimaryButtonStyle != null)
+            {
+                OK.Style = (Style)PrimaryButtonStyle;
+            }
+            OK.Click += OK_Click;
+
+        }
+
+
 
         private void CreateYesNoContent()
         {
@@ -136,6 +161,12 @@ namespace AvnConnect.Dialogs
         private void Yes_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = DialogResults.Yes;
+            this.Close();
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = DialogResults.OK;
             this.Close();
         }
 

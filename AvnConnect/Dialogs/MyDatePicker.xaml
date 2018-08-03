@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="AvnConnect.Dialogs.MyDatePicker"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AvnConnect.Dialogs"            
+             mc:Ignorable="d"
+             xmlns:app="clr-namespace:AvnConnect"
+             Padding="3"
+             d:DataContext="AvnConnect.Dialogs.MyDatePicker">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Header}" Margin="0, 0, 0, 4" Style="{DynamicResource MaterialDesignBody2TextBlock}"></TextBlock>
+        <DatePicker Grid.Row="1" SelectedDate="{Binding SelectedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 0, 0, 4"></DatePicker>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <app:MyTextBlock FontSize="10"
+                             Click="ToDayMyTextBlock_Click"
+                             Margin="0, 0, 4, 0" Text="Today"></app:MyTextBlock>
+            <app:MyTextBlock FontSize="9" Margin="0, 0, 4, 0" Text="+1 Day"
+                             Click="Tomorrow_Click"
+                             ></app:MyTextBlock>
+            <app:MyTextBlock FontSize="9" 
+                             Click="NextWeek_Click"
+                             Margin="0, 0, 4, 0" Text="+7 Days"></app:MyTextBlock>
+            <app:MyTextBlock FontSize="9" 
+                             Click="NextMonday_Click"
+                             Margin="0, 0, 4, 0" Text="Mon"></app:MyTextBlock>
+            <app:MyTextBlock FontSize="9"  
+                             Click="ClearDateClick"
+                             Margin="0, 0, 4, 0" Text="No Date"></app:MyTextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

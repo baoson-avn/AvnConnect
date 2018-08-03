@@ -131,6 +131,15 @@
     <Compile Include="Data\ProjectStaffs.cs">
       <DependentUpon>Connect.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ProjectTaskList.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Tags.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Task.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\UserProjectPermission.cs">
       <DependentUpon>Connect.tt</DependentUpon>
     </Compile>
@@ -143,6 +152,9 @@
     <Compile Include="Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\MyDatePicker.xaml.cs">
+      <DependentUpon>MyDatePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="Extended.cs" />
@@ -152,10 +164,22 @@
     <Compile Include="Projects\AddNewCategory.xaml.cs">
       <DependentUpon>AddNewCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Projects\AddNewProject.xaml.cs">
+      <DependentUpon>AddNewProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Projects\AddNewProjectTaskList.xaml.cs">
+      <DependentUpon>AddNewProjectTaskList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Projects\CategoriesManager.xaml.cs">
       <DependentUpon>CategoriesManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Projects\CategoryItems.cs" />
+    <Compile Include="Projects\ProjectCard.xaml.cs">
+      <DependentUpon>ProjectCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Projects\ProjectDetailViewer.xaml.cs">
+      <DependentUpon>ProjectDetailViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Projects\ProjectViewer.xaml.cs">
       <DependentUpon>ProjectViewer.xaml</DependentUpon>
     </Compile>
@@ -182,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\MyDatePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,7 +269,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Projects\AddNewProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Projects\AddNewProjectTaskList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Projects\CategoriesManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Projects\ProjectCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Projects\ProjectDetailViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -309,6 +353,12 @@
       <LastGenOutput>Connect.cs</LastGenOutput>
       <DependentUpon>Connect.edmx</DependentUpon>
     </Content>
+    <Resource Include="Images\Catalina, California 1920x1080.jpg" />
+    <Resource Include="Images\3203.jpg" />
+    <Resource Include="Images\4981.jpg" />
+    <Resource Include="Images\104.jpg" />
+    <Resource Include="Images\O7MF5N0.jpg" />
+    <Resource Include="Images\592.jpg" />
     <Resource Include="Images\59 - j3qx1la.jpg" />
     <Resource Include="Images\Tyulenovo, Bulgaria 1920x1080.jpg" />
   </ItemGroup>
